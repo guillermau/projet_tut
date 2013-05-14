@@ -46,22 +46,30 @@
         <?php echo $this->session->flashdata('succes'); ?>
       </div>
     <?php endif; ?>
-    
-    <div class="btn-toolbar" style="text-align:right">
-      <div class="btn-group">
-        <a class="btn" id="liste" href="#"><i class="icon-list"></i></a>
-        <a class="btn" id="boite" href="#"><i class="icon-th-large"></i></a>
+      
+    <form method="post" action="<?php echo site_url('projet/action/')?>"> <!-- Ajout -->
+	<div class="btn-toolbar" style="text-align:right">
+		<div class="btn-group">
+			<a class="btn" id="liste" href="#"><i class="icon-list"></i></a>
+			<a class="btn" id="boite" href="#"><i class="icon-th-large"></i></a>
+		</div>
+		
+		<div class="btn-group">
+		<!-- Gestion dossier -->
+			<?php if(!empty($droits->upload)): ?>
+				
+				<button class="btn" id="nouv-rep">Nouveau dossier</button>
+				<input type="submit" name="ordre" class="btn" id="telecharger" value="Telecharger"/> <!-- Ajout -->
+				<input type="submit" name="ordre" class="btn" id="supprimer" value="Supprimer"/> <!-- Ajout -->
+				<input type="hidden" name="idprojet" id="idprojet" value="<?php echo $idprojet; ?>" /> <!-- Ajout -->
+				<input type="hidden" name="idprojet" id="idrep_courant" value="<?php echo $idrep; ?>" /> <!-- Ajout -->
+			<?php endif; ?>
+			<?php if(!empty($droits->upload) && $emptyrep == true): ?>
+				<a id="suppr-rep" href="<?php echo site_url('projet/supprimer-repertoire/'.$idrep) ?>" class="btn btn">Supprimer dossier</a>
+			<?php endif; ?>
+		</div>
+	</div> 
 
-        <!-- Gestion dossier -->
-        <?php if(!empty($droits->upload)): ?>
-          <button class="btn" id="nouv-rep">Nouveau dossier</button>
-        <?php endif; ?>
-        <?php if(!empty($droits->upload) && $emptyrep == true): ?>
-          <a id="suppr-rep" href="<?php echo site_url('projet/supprimer-repertoire/'.$idrep) ?>" class="btn btn">Supprimer dossier</a>
-        <?php endif; ?>
-
-      </div>
-    </div>
     <?php 
       // Si aucun dossier ni répertoire n'est trouvé
       if(empty($documents) && empty($repertoires)) {
@@ -75,8 +83,13 @@
 
         // On liste les dossiers
         foreach($repertoires as $rep) {
-            echo '<li class="repertoire">';
-            echo '<a class="replink" href="'.site_url("projet/documents/".$rep->idprojet."/".$rep->idrepertoire).'">'.$rep->nom.'</a></li>'; 
+            
+            echo '<li class="repertoire">'; 
+            echo '<input type="checkbox" name="repertoire'.$rep->idrepertoire.'" id="repertoire'.$rep->idrepertoire.'" />'; // Ajout
+            echo '<a  class="replink" href="'.site_url("projet/documents/".$rep->idprojet."/".$rep->idrepertoire).'">'.$rep->nom.'</a>';
+            echo '</li>'; //<br />
+            
+           
         }
 
         // Si le dossier a des documents
@@ -89,6 +102,7 @@
                 $chemin = site_url("uploads/projets/".$doc->idprojet."/".$doc->idrepertoire."/".$doc->chemin_fichier);
 
               echo '<li class="'.$doc->type->type.'"><a class="downlink" target="_blank" href="'.$chemin.'"><img src="'.site_url("img/download.png").'" width="16" height="16" /></a>';
+              echo '<input type="checkbox" name="document'.$doc->iddocument.'" id="document'.$doc->iddocument.'"  />';  // Ajout
               echo '<a href="'.site_url("document/apercu/".$doc->iddocument).'">'.$doc->nom_original.'<div class="meta"><span data-meta="proprietaire">'.$membres[$doc->idutilisateur]->nom.'</span><br/><span data-meta="date-maj">'.date("d/m/Y h:i:s",strtotime($doc->maj)).'</span><span data-meta="date-maj">'.date("d/m/Y h:i:s",strtotime($doc->creation)).'</span></div></a></li>';
             }
           }
@@ -98,6 +112,7 @@
 
       }
     ?>
+    </form>
     <div class="clearfix"></div>
     <?php if(!empty($droits->upload)): ?>
     <div class="well" id="uparea">
