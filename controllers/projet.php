@@ -103,7 +103,7 @@ class Projet extends CI_Controller {
 
 	}
 
-	//page document du projet
+	//page document du projet // Guillaume (enleve le dossier parent)
 	public function documents($idprojet, $idrep = null){
 		$this->load->model("document_model");
 		$this->load->model("repertoire_model");
@@ -121,13 +121,13 @@ class Projet extends CI_Controller {
 		$data["documents"]  = $this->document_model->documents_projet_et_droits($idprojet, $idrep, $data["utilisateur"]->idutilisateur);
 		$data["membres"]    = $this->projet_model->lister_membres($idprojet);
 		$data["repertoires"] = array();
-		if(!is_null($idrep)) {
+		/*if(!is_null($idrep)) {
 			$rep          	   = new stdClass();
 			$rep->nom 		   = "Parent";
 			$rep->idprojet	   = $idprojet;
 			$rep->idrepertoire = $this->repertoire_model->pere_repertoire($idprojet, $idrep);
 			array_push($data["repertoires"], $rep);
-		}
+		}*/
 		$data["repertoires"] = array_merge($data["repertoires"], $this->repertoire_model->lister_repertoires($idprojet, $idrep));
 		$data["idprojet"] = $idprojet;
 		$data["idrep"]    = $idrep;
@@ -510,5 +510,39 @@ class Projet extends CI_Controller {
 		$this->load->model("repertoire_model");
 		return $this->repertoire_model->verifier_repertoire_vide($idrepertoire);
 
+	}
+	
+	//Nouvelle fonction action // Guillaume
+	public function action() {
+		$this->load->model("repertoire_model");
+		$this->load->model("document_model");
+		
+		//$repData = $this->repertoire_model->infos_repertoire($racine); // On recupere les donnees de la racine
+		
+		$ordre = $this->input->post("ordre", TRUE); // On recupere l'ordre
+		$racine = $this->input->post("idrep_courant", TRUE);
+		$idprojet = $this->input->post("idprojet", TRUE);
+		
+		//On recupere les donnes du post
+		//On cherche a identifier les checkbox validé
+		
+		// On fait le tri entre repertoire et document
+		
+		
+		if ($_POST['ordre'] == "Telecharger") // On telecharge
+		{
+		// telecharger_zip ($iddoc,$idracine) pour les documents
+		// telecharger_rep ($idrep,$idracine) pour les repertoires
+		;}
+		else //Ici on supprime
+		{
+		// supprimer_document($iddoc) pour les documents
+		// supprimer_repertoire_plein($idrepertoire)
+		;}
+		if(is_null($racine))
+		redirect("projet/documents/".$idprojet."/".$racine);
+		else
+		redirect("projet/documents/".$idprojet."/".$racine);
+		
 	}
 }

@@ -113,7 +113,7 @@ class Document_model extends CI_Model {
 	}
 
 	// Document par identifiant
-    public function recuperer_document($iddoc) {
+	public function recuperer_document($iddoc) {
             return $this->db->select('*')
                                     ->from($this->table)
                                     ->where('iddocument',$iddoc)
@@ -253,7 +253,6 @@ class Document_model extends CI_Model {
 	
 	
 	// Récuperer données des images
-	
 	public function recuperer_donnees_images ($iddoc){
 		$tp = $this->db->select('type')
 					->from($this->document);
@@ -332,17 +331,32 @@ class Document_model extends CI_Model {
 						->update($this->table, array('maj' => date('Y-m-d h:i:s')));
 	}
 
-	// supprimer document
+	// supprimer document // modifier (Guillaume)
 	public function supprimer_document($iddoc) {
 		$this->load->model('tag_model');
 		$this->tag_model->supprimer_tags_document($iddoc);
 	 	
+		$document = $this->db->select('*')
+						->from($this->table)
+						->where('iddocument',$iddoc)
+						->get()
+						->row();
+						
 		$this->db->where('iddocument', $iddoc)->delete($this->images);
 		$this->db->where('iddocument', $iddoc)->delete($this->droit_document);
 		$this->db->where('iddocument', $iddoc)->delete($this->table);
 		
 		$this->load->model('upload_model');
-		$this->upload_model->supprimer_fichier($iddoc);
+		
+		
+		
+		if ($document->idrepertoire == '0')
+		{ $chemin = "uploads/projets/".$document->idprojet."/".$document->chemin_fichier;}
+		else 
+		{ $chemin = "uploads/projets/".$document->idprojet."/".$document->idrepertoire."/".$document->chemin_fichier;}
+		
+		$this->upload_model->supprimer_fichier($chemin);
+		return $chemin;
 	}
 	
 	// déplacer document
@@ -360,6 +374,76 @@ class Document_model extends CI_Model {
 		$this->upload_model->deplacer_fichier($chemin, $idnouvprojet, $idnouvrepertoire);
 		
 	}
+	
+	// télécharger document // En cours (Guillaume)
+	public function telecharger_document ($iddoc){
+	$this->load->helper('download');
+	
+	$document = $this->db->select('*')
+						->from($this->table)
+						->where('iddocument',$iddoc)
+						->get()
+						->row();
+	
+	if ($document->idrepertoire == '0')
+	{ $chemin = site_url("uploads/projets/".$document->idprojet."/".$document->chemin_fichier);}
+	else 
+	{ $chemin = site_url("uploads/projets/".$document->idprojet."/".$document->idrepertoire."/".$document->chemin_fichier);}
+	
+	$data = file_get_contents($chemin); // Read the file's contents
+	$name = $document->chemin_fichier;
+
+	force_download($name, $data); // Download direct
+	}
+	
+
+	// Telechargement sous forme de zip // En cours (Guillaume)
+	public function telecharger_zip ($iddoc,$idracine){
+	$this->load->helper('download');
+	$this->load->library('zip');
+	
+	
+	$document = $this->db->select('*')
+						->from($this->table)
+						->where('iddocument',$iddoc)
+						->get()
+						->row();
+	
+	if ($document->idrepertoire == '0')
+	{ $chemin = site_url("uploads/projets/".$document->idprojet."/".$document->chemin_fichier);}
+	else 
+	{ $chemin = site_url("uploads/projets/".$document->idprojet."/".$document->idrepertoire."/".$document->chemin_fichier);}
+	
+	$chemin_concret = $document->chemin_fichier;
+	$idrep = $document->idrepertoire;
+	
+	if($document->idrepertoire != $idracine){
+	
+		do
+		{
+		$repertoire = $this->db->select("*")
+							->from("repertoires")
+							->where("idprojet", $document->idprojet)
+							->where("idrepertoire", $idrep)
+							->get()
+							->row();
+		$chemin_concret = $repertoire->nom."/".$chemin_concret;
+		$idrep = $repertoire->pere;
+		}
+		while ( !is_null($idrep) && $idrep == $idracine);
+	}
+	
+	$data = file_get_contents($chemin); // Read the file's contents
+	//$name = $repertoire->nom."/".$document->chemin_fichier;
+	
+	//Avec la fonction zip
+	$this->zip->add_data($chemin_concret, $data);
+	
+	
+	
+	}
+
+	
 	
 	// changer répertoire du document
 	public function changer_rep ($iddoc, $idnouvrepertoire){
@@ -391,9 +475,6 @@ class Document_model extends CI_Model {
 		}
 	}
 	
-	
-
-
 	// récupération du exif d'une image
 	public function recup_exif($iddoc){
 		$chem_doc = $this->db->select('chemin_fichier')

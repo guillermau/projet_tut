@@ -51,6 +51,70 @@ class Repertoire_model extends CI_Model {
 
 		return $data->pere;
 	}
+	
+	// Retourne le chemin physique du repertoire // Guillaume
+	public function chemin_phys_rep($idrep) {
+		$data = $this->db->select("*")
+    					->from($this->repertoires)
+    					->where("idrepertoire", $idrepertoire)
+    					->get()
+    					->row();
+
+		$chemin = site_url("uploads/projets/".$data->idprojet."/".$data->idrepertoire);
+
+		return $chemin;
+	}
+
+	// Retourne le chemin virtuel du repertoire par rapport a la racine // Guillaume
+	/*public function chemin_virt_rep($idrep,$idracine) {
+		Peut etre innutile de develloper cette fonction
+	}*/
+
+
+	// Retourne l'adresse de l'application du repertoire // Guillaume
+	public function chemin_clic_rep($idrep) {
+	
+		$data = $this->db->select("*")
+    					->from($this->repertoires)
+    					->where("idrepertoire", $idrepertoire)
+    					->get()
+    					->row();
+    					
+
+		$chemin = "projet/documents/".$data->idprojet."/".$data->idrepertoire;
+		return $chemin;
+	}
+
+	// Telecharger repertoire // Guillaume
+	public function telecharger_rep ($idrep,$idracine) {
+		$this->load->model("document_model");
+		
+		// Controle si presence de documents
+		$data = $this->db->select("iddococument")
+			->from($this->documents)
+			->where("idrepertoire", $idrep)
+			->get()
+			->row();
+			
+		foreach ( $data as $iddoc) // Oui, ajout au zip
+		{
+			telecharger_zip ($iddoc,$idracine);
+		}
+		
+		$data = $this->db->select("idrepertoire")
+			->from($this->repertoires)
+			->where("pere", $idrep)
+			->get()
+			->row();
+			
+		foreach ( $data as $idrep) // Oui, ajout au zip
+		{
+			telecharger_zip ($idrep,$idracine);
+		}
+
+		//Fin
+	
+	}
 
 	// Créer répertoire
 	public function creer_repertoire($idprojet, $nom, $idpere = null) {

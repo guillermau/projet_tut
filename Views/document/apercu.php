@@ -43,6 +43,7 @@
     <tr>
       <td colspan="2">
         <a class="btn" id="doc-lien" target="_blank" href="<?php echo $chemin;?>">Telecharger</a>
+        <a href="<?php echo site_url("document/telecharger/".$doc->iddocument); ?>" class="btn" id="doc-telecharger">Download</a>
         <a href="<?php echo site_url("document/gestion/".$doc->iddocument); ?>" class="btn btn-info" id="doc-edit">Editer</a>
         <a href="<?php echo site_url("document/supprimer/".$doc->iddocument); ?>" class="btn btn-danger">Supprimer</a>
       </td>
