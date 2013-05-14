@@ -62,6 +62,7 @@ public function apercu($iddoc){
 public function upload($idprojet){
 	$this->load->model("upload_model");
 	$this->load->model("utilisateur_model");
+        
 	
 	//vérifier si utilisateur est membre du projet
 	$grpUtil = $this->utilisateur_model->verifier_acces_projet($idprojet, $this->donnees->idutilisateur);
@@ -105,6 +106,7 @@ public function upload($idprojet){
 			echo "echec: ".validation_errors();
 		}
 	}
+        
 }
 
 public function nlrc_upload($iddoc){

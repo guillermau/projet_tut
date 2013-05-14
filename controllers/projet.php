@@ -540,10 +540,16 @@ class Projet extends CI_Controller {
 		// supprimer_document($iddoc) pour les documents
 		// supprimer_repertoire_plein($idrepertoire)
 		;}
-		if(is_null($racine))
-		redirect("projet/documents/".$idprojet."/".$racine);
-		else
-		redirect("projet/documents/".$idprojet."/".$racine);
+		$this->actualisation($idprojet,$racine);
 		
 	}
+        
+        //Nouvelle fonction actualisation  // Guillaume
+        public function actualisation ($idprojet,$idrep_courant) {
+            if(is_null($idrep_courant))
+            redirect("projet/documents/".$idprojet);
+            else
+            redirect("projet/documents/".$idprojet."/".$idrep_courant);
+            
+        }
 }

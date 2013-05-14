@@ -47,7 +47,7 @@
       </div>
     <?php endif; ?>
       
-    <form method="post" action="<?php echo site_url('projet/action/')?>"> <!-- Ajout -->
+    
 	<div class="btn-toolbar" style="text-align:right">
 		<div class="btn-group">
 			<a class="btn" id="liste" href="#"><i class="icon-list"></i></a>
@@ -59,17 +59,18 @@
 			<?php if(!empty($droits->upload)): ?>
 				
 				<button class="btn" id="nouv-rep">Nouveau dossier</button>
-				<input type="submit" name="ordre" class="btn" id="telecharger" value="Telecharger"/> <!-- Ajout -->
-				<input type="submit" name="ordre" class="btn" id="supprimer" value="Supprimer"/> <!-- Ajout -->
-				<input type="hidden" name="idprojet" id="idprojet" value="<?php echo $idprojet; ?>" /> <!-- Ajout -->
-				<input type="hidden" name="idprojet" id="idrep_courant" value="<?php echo $idrep; ?>" /> <!-- Ajout -->
+				
+				
 			<?php endif; ?>
 			<?php if(!empty($droits->upload) && $emptyrep == true): ?>
 				<a id="suppr-rep" href="<?php echo site_url('projet/supprimer-repertoire/'.$idrep) ?>" class="btn btn">Supprimer dossier</a>
 			<?php endif; ?>
 		</div>
 	</div> 
-
+    <form method="post" action="<?php echo site_url('projet/action/')?>"> <!-- Ajout -->
+    <input type="hidden" name="idprojet" id="idprojet" value="<?php echo $idprojet; ?>" /> <!-- Ajout -->
+    <input type="hidden" name="idrep_courant" id="idrep_courant" value="<?php echo $idrep; ?>" /> <!-- Ajout -->
+    
     <?php 
       // Si aucun dossier ni répertoire n'est trouvé
       if(empty($documents) && empty($repertoires)) {
@@ -112,6 +113,8 @@
 
       }
     ?>
+    <button type="submit" name="ordre" class="btn" id="telecharger"/>Telecharger</button> <!-- Ajout -->
+    <button type="submit" name="ordre" class="btn" />Supprimer</button> <!-- Ajout -->
     </form>
     <div class="clearfix"></div>
     <?php if(!empty($droits->upload)): ?>
@@ -130,7 +133,7 @@
       </div>
       <div class="clearfix"></div>
     </div>
-    <?php endif; ?>
+    <?php endif;?>
   </div>
   <div id="modal-meta" class="modal hide fade">
     <div class="modal-header">
