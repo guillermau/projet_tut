@@ -1,0 +1,127 @@
+AIDE GENERALE
+
+inscription
+	cliquer sur le bouton "inscription", un formulaire apparait. Le remplir en veillant à utiliser une adresse mail valide puis cliquer sur "valider".
+
+connexion
+	rentrer son adresse mail et son mot de passe dans leur case respective puis cliquer sur "login".
+	
+navigateurs
+	Firefox et chrome
+	
+Formats de fichiers conseillés
+	
+	
+
+AIDE UTILISATEUR
+
+Status:
+	Après l'inscription, l'utilisateur obtient le status 'invité' ce qui ne lui donne pas le droit de créer de projet; c'est alors au superAdmin de choisir 
+	de bloquer ou confirmer l'utilisateur ou simplement le laissé invité.
+	invité: l'utilisateur peut participer à des projets mais ne peut pas en créer.
+	actif: l'utilisateur peut créer et participer à des projets
+	bloqué: l'accès est refusé à l'utilisateur, il ne peut pas se connecter.
+	
+modifier information profil
+	aller dans l'onglet profil et cliquer sur le bouton "modifier" en bas de page. Un formulaire apparait, changer alors les informations puis valider.
+	
+créer un projet
+	Pour pouvoir créer un projet, le statut de l'utilisateur doit être "actif", si ce n'est pas le cas, contacter l'administrateur.
+	Pour créer le projet, cliquer sur le bouton créer projet dans la page d'accueil, remplir le formulaire puis valider.
+
+Rejoindre un projet
+	Contacter un des membres administrateur du projet pour que celui ci envoie une invitation
+
+contacter un autre utilisateur
+	Aller sur la page de profil de l'utilisateur, cliquer sur "contacter".
+	
+recherche
+	Selectionner le type de recherche souhaité:
+				-document:
+				recherche parmi tous les documents sur lesquels l'utilisateur a le droit de lecture.
+				
+				-membre:
+				recherche parmi tous les utilisateurs
+				
+				-projet:
+				recherche parmi tous les projets
+				
+	En cliquant sur recherche avancée, un formulaire plus complet et précis apparait; lancer la recherche en cliquant sur le bouton 'rechercher'
+
+
+
+AIDE PROJET
+
+inviter un membre
+	Seul les membre du groupe administrateur d'un projet on le droit d'inviter de nouveaux membres.
+	Faire un clic droit sur l'utilisateur, selectionner inviter, le projet puis le groupe et valider.
+	
+exclure un membre
+	Seul les membre du groupe administrateur d'un projet on le droit d'exclure des membres.
+	Faire un clic droit sur l'utilisateur dans la page "membres" du projet, selectionner 'exclure' puis valider
+	
+Droits:
+	Dans un projet, chaque groupe a des droits différents; il en existe trois:
+	-Upload : permet d'ajouter de nouveaux documents à un projet
+	-lecture : permet de télécharger ou afficher les informations d'un document
+	-écriture : permet de remplacer un document par un nouvelle version, voire de le supprimer
+	
+	Il est aussi possible d'augmenter ou diminuer exceptionnellement les droits d'un groupe sur un document spécifique en ajoutant des droits sur ce  document (lecture et écriture)
+	
+créer un groupe
+	Seul les membre du groupe administrateur d'un projet on le droit de créer de  nouveaux groupes.
+	Cliquer sur "créer un nouveau groupe" dans l'accueil du projet, remplir le formulaire puis valider.
+	
+
+modifier les droits d'un groupe : 
+	Seul les membre du groupe administrateur d'un projet on le droit de modifier les droits d'un groupe.
+	Faire un clic droit sur le groupe, selectionner 'modifier droits', choisir les nouveaux droits, valider le formulaire.
+
+	
+supprimer un groupe
+	Seul les membre du groupe administrateur d'un projet on le droit de supprimer des groupes.
+	Un groupe doit être vide pour pouvoir être supprimer.
+	Faire un clique droit sur le groupe, selectionner supprimer puis valider.
+
+uploader un document
+	Pour uploader un document dans un projet, l'utilisateur doit être membre de ce projet et faire parti d'un groupe ayant le droit d'upload; si ce n'est pas le cas, contacter un des membres
+	du groupe administrateur du projet pour qu'il modifie les droits du groupe ou change l'utilisateur de groupe.
+	Pour uploader un document, se placer dans le repertoire cible du projet et : 
+																				- glisser/déposer le document dans la barre d'envoi de fichier (marche avec plusieurs documents en même temps
+																				- ou cliquer sur le bouton 'ajouter document' et selectionner le document à ajouter 
+
+modifier un document
+	Pour pouvoir modifier les informations d'un document d'un projet, l'utilisateur doit être membre de ce projet et faire parti d'un groupe ayant le droit d'écriture sur ce document ;
+	si ce n'est pas le cas, contacter un des membres du groupe administrateur du projet pour qu'il modifie les droits du groupe ou change l'utilisateur de groupe.
+	Pour modifier un document:- si le document uploadé à le même nom, il sera demandé de le remplacer ou non
+							  - ou faire un clic droit sur le document, selectionner remplacer puis choisir le fichier dans l'explorateur.
+		
+modifier les droits d'un document :
+	Seul les membre du groupe administrateur d'un projet et le propriétaire on le droit de modifier les droits d'un document.
+	Faire un clic droit sur le document, selectionner 'modifier droits', choisir les nouveaux droits et le groupe à affecter puis valider le formulaire.
+							  
+modifier les infos d'un document
+	Pour pouvoir modifier les informations d'un document d'un projet, l'utilisateur doit être membre de ce projet et faire parti d'un groupe ayant le droit d'écriture sur ce document ;
+	si ce n'est pas le cas, contacter un des membres du groupe administrateur du projet pour qu'il modifie les droits du groupe ou change l'utilisateur de groupe.
+	faire un clic droit sur le document, puis selectionner 'modifier les informations'; un formulaire apparait, modifier alors les informations puis valider.
+							  
+supprimer un document
+	Pour pouvoir modifier les informations d'un document d'un projet, l'utilisateur doit être membre de ce projet et faire parti d'un groupe ayant le droit d'écriture sur ce document ;
+	si ce n'est pas le cas, contacter un des membres du groupe administrateur du projet pour qu'il modifie les droits du groupe ou change l'utilisateur de groupe.
+	Pour modifier un document: - faire un clic droit sur le document, selectionner supprimer puis confirmer la suppression.
+
+
+	
+créer un groupe
+	Seul les membre du groupe administrateur d'un projet on le droit de créer de  nouveaux groupes.
+	Cliquer sur "créer un nouveau groupe" dans l'accueil du projet, remplir le formulaire puis valider.
+	
+supprimer un groupe
+	Seul les membre du groupe administrateur d'un projet on le droit de supprimer des groupes.
+	Un groupe doit être vide pour pouvoir être supprimer.
+	Faire un clique droit sur le groupe, selectionner supprimer puis valider.
+	
+
+	
+
+
