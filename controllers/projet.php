@@ -1,10 +1,10 @@
 <?php
-/*controleur lié au projet
--créer projet
+/*controleur liï¿½ au projet
+-crï¿½er projet
 -accueil projet (statistique du projet)
 -documents du projet
 -afficher membres du projet (par groupe)
--créer groupe
+-crï¿½er groupe
 -gestion groupe
 -ajouter membre
 -gestion projet
@@ -23,15 +23,15 @@ class Projet extends CI_Controller {
 		$this->load->model("utilisateur_model");
 	}
 
-	//création d'un projet par l'utilisateur
+	//crï¿½ation d'un projet par l'utilisateur
 	 public function creer() {
 	    $this->load->model("upload_model");
 		
-		$utilisateur = $this->profil_model->recuperer_mes_donnees(); //utilisateur récupéré des cookies de la session
+		$utilisateur = $this->profil_model->recuperer_mes_donnees(); //utilisateur rï¿½cupï¿½rï¿½ des cookies de la session
 		
-		//l'utilisateur ne peut créer un nouveau projet que s'il n'est pas invité
+		//l'utilisateur ne peut crï¿½er un nouveau projet que s'il n'est pas invitï¿½
 		if( $utilisateur->invite == false){
-			//vérification formulaire
+			//vï¿½rification formulaire
 
 			$this->load->library('form_validation');
 			
@@ -40,13 +40,13 @@ class Projet extends CI_Controller {
 			//si formulaire rempli et bon
 			if ($this->form_validation->run() == TRUE)
 			{
-				//création du projet
+				//crï¿½ation du projet
 				$id = $this->projet_model->creer_projet($this->input->post("nom",TRUE), 
-														$this->input->post("description",TRUE), 
-														$utilisateur->idutilisateur,
-														$this->input->post("tags",TRUE));
+                                                                $this->input->post("description",TRUE), 
+                                                                $utilisateur->idutilisateur,
+                                                                $this->input->post("tags",TRUE));
 				if(empty($id)){
-					$data = array('erreur' => 'Erreur dans la création du projet.');
+					$data = array('erreur' => 'Erreur dans la crï¿½ation du projet.');
 					$this->template->render("projet/creer",$data);
 				}
 				//upload de l'image du projet
@@ -56,18 +56,19 @@ class Projet extends CI_Controller {
 					if(!empty($image["echec"])){
 						$data = array('erreur' => $image["echec"]);
 						$this->template->render("projet/creer",$data);
-						return false;
+                                                redirect("mes-projets");
+						return false;//Il me semble que ce false ne renvoit vers rien (Guillaume)
 					}
 				}
-				//si tout a bien marché, renvoie a l'accueil du formularie
+				//si tout a bien marchï¿½, renvoie a l'accueil du formularie
 				redirect("mes-projets");
 			}else{
 				//si formulaire n'est pas bon ou pas encore rempli
 				$this->template->render("projet/creer");
 			} 	
 		}else{
-			//si j'ai pas les droits pour être ici
-			$this->session->set_flashdata('erreur', 'Droits insufisants pour créer un projet.');
+			//si j'ai pas les droits pour ï¿½tre ici
+			$this->session->set_flashdata('erreur', 'Droits insufisants pour crï¿½er un projet.');
 			redirect("mes-projets");
 		}
 	}
@@ -75,10 +76,10 @@ class Projet extends CI_Controller {
 	//page d'accueil du projet
 	public function accueil($idprojet){
 		$data["utilisateur"] = $this->profil_model->recuperer_mes_donnees();
-		$data["projet"]      = $this->projet_model->recuperer_projet($idprojet);//récupération des infos du projet
-		$data["nbdocs"]      = $this->projet_model->nombre_documents_prj($idprojet);//récupération du nombre de documents du projet
-		$data["nbmembres"]   = $this->projet_model->nombre_membres_prj($idprojet);//récupération du nombre de membres du projet
-		$data["nbinvites"]   = $this->projet_model->nombre_invites_prj($idprojet);//récupération du nombre de invités du projet
+		$data["projet"]      = $this->projet_model->recuperer_projet($idprojet);//rï¿½cupï¿½ration des infos du projet
+		$data["nbdocs"]      = $this->projet_model->nombre_documents_prj($idprojet);//rï¿½cupï¿½ration du nombre de documents du projet
+		$data["nbmembres"]   = $this->projet_model->nombre_membres_prj($idprojet);//rï¿½cupï¿½ration du nombre de membres du projet
+		$data["nbinvites"]   = $this->projet_model->nombre_invites_prj($idprojet);//rï¿½cupï¿½ration du nombre de invitï¿½s du projet
 		$data["isadmin"]     = $this->utilisateur_model->verifier_admin_projet($idprojet,$data["utilisateur"]->idutilisateur);//si le utilisateur est admin du projet
 		$data["groupes"]     = $this->projet_model->lister_groupes($idprojet);
 		if(empty($data["projet"])){
@@ -88,18 +89,18 @@ class Projet extends CI_Controller {
 
 	}
 
-	//page d'aperçu du projet pour un non membre
+	//page d'aperï¿½u du projet pour un non membre
 	public function apercu($idprojet){
 		$data["utilisateur"] = $this->profil_model->recuperer_mes_donnees();
 		if($this->utilisateur_model->verifier_acces_projet($idprojet,$data['utilisateur']->idutilisateur)){
 			redirect("projet/accueil/".$idprojet);
 		}
-		$data["projet"]      = $this->projet_model->recuperer_projet($idprojet);//récupération des infos du projet
-		$data["nbdocs"]      = $this->projet_model->nombre_documents_prj($idprojet);//récupération du nombre de documents du projet
-		$data["nbmembres"]   = $this->projet_model->nombre_membres_prj($idprojet);//récupération du nombre de membres du projet
-		$data["nbinvites"]   = $this->projet_model->nombre_invites_prj($idprojet);//récupération du nombre de invités du projet
+		$data["projet"]      = $this->projet_model->recuperer_projet($idprojet);//rï¿½cupï¿½ration des infos du projet
+		$data["nbdocs"]      = $this->projet_model->nombre_documents_prj($idprojet);//rï¿½cupï¿½ration du nombre de documents du projet
+		$data["nbmembres"]   = $this->projet_model->nombre_membres_prj($idprojet);//rï¿½cupï¿½ration du nombre de membres du projet
+		$data["nbinvites"]   = $this->projet_model->nombre_invites_prj($idprojet);//rï¿½cupï¿½ration du nombre de invitï¿½s du projet
 
-		$this->template->render('projet/apercu',$data);//appel au view aperçu du projet
+		$this->template->render('projet/apercu',$data);//appel au view aperï¿½u du projet
 
 	}
 
@@ -109,7 +110,7 @@ class Projet extends CI_Controller {
 		$this->load->model("repertoire_model");
 		$data["utilisateur"] = $this->profil_model->recuperer_mes_donnees();
 
-		//vérifie si l'utilisateur à le droit d'acceder au projet
+		//vï¿½rifie si l'utilisateur ï¿½ le droit d'acceder au projet
 		if(($grp = $this->utilisateur_model->verifier_acces_projet($idprojet, $data["utilisateur"]->idutilisateur)) == false) {
 			$this->session->set_flashdata('erreur', 'Vous n\'&ecirc;tes pas membre de ce projet.');
 			redirect("mes-projets");
@@ -150,7 +151,7 @@ class Projet extends CI_Controller {
 
 	//gestion projet (+ modifier projet)
 	public function gestion($idprojet){
-		//vérifie si l'utilisateur est dans le groupe admin du projet
+		//vï¿½rifie si l'utilisateur est dans le groupe admin du projet
 		$data["utilisateur"] = $this->profil_model->recuperer_mes_donnees();
 		if(! $this->utilisateur_model->verifier_admin_projet($idprojet,$data["utilisateur"]->idutilisateur)) {
 			$this->session->set_flashdata('erreur', 'Vous n\'&ecirc;tes pas administrateur de ce projet.');
@@ -161,7 +162,7 @@ class Projet extends CI_Controller {
 		$data["groupes"] = $this->projet_model->lister_groupes_droits($idprojet);
 		$data["membres"] = $this->projet_model->lister_membres_par_groupe($idprojet);
 
-		//vérification du formulaire
+		//vï¿½rification du formulaire
 		$this->load->library('form_validation');
 						
 		$this->form_validation->set_rules('nom', 'Nom du groupe', 'required|max_length[256]');
@@ -169,21 +170,21 @@ class Projet extends CI_Controller {
 
 		//Si une requete ajax
 		if(is_ajax()){
-			//si formulaire envoyé et bon
+			//si formulaire envoyï¿½ et bon
 			if ($this->form_validation->run() == TRUE){	
 				//print_r($idprojet);
 				$this->projet_model->modifier_projet($idprojet, $this->input->post("nom",TRUE), $this->input->post("description",TRUE), $this->input->post("tags",TRUE));
 				echo "succes";
-			//si formulaire incomplet ou non envoyé	
+			//si formulaire incomplet ou non envoyï¿½	
 			}else{
 				 echo validation_errors();
 			}	
 		} else {
-			//si formulaire envoyé et bon
+			//si formulaire envoyï¿½ et bon
 			if ($this->form_validation->run() == TRUE){	
 				$this->projet_model->modifier_projet($idprojet, $this->input->post("nom",TRUE), $this->input->post("description",TRUE), $this->input->post("tags",TRUE));
 				redirect("projet/gestion/".$idprojet);
-			//si formulaire incomplet ou non envoyé	
+			//si formulaire incomplet ou non envoyï¿½	
 			}else{
 				$this->template->render('projet/gestion',$data);
 			}
@@ -199,7 +200,7 @@ class Projet extends CI_Controller {
 
 		$image = $this->upload_model->upload_image_profil("image", $idprojet, true);
 
-		// Si une image à été envoyée, une array est retournée (même en cas d'echec)
+		// Si une image ï¿½ ï¿½tï¿½ envoyï¿½e, une array est retournï¿½e (mï¿½me en cas d'echec)
 		if(is_array($image)) {
 			// Si echec dans l'nevoi
 			if(!empty($image["echec"])){
@@ -209,7 +210,7 @@ class Projet extends CI_Controller {
 			} else {
 				redirect("projet/accueil/".$idprojet);
 			}
-		//si aucune image à été envoyée
+		//si aucune image ï¿½ ï¿½tï¿½ envoyï¿½e
 		} else {
 			$this->template->render('projet/modifier_image',$data);
 		}
@@ -225,26 +226,26 @@ class Projet extends CI_Controller {
 		}
 	}
 
-	//création d'un groupe dans le projet
+	//crï¿½ation d'un groupe dans le projet
 	public function creer_groupe($idprojet){
-		//vérifie si l'utilisateur est dans le groupe admin du projet
+		//vï¿½rifie si l'utilisateur est dans le groupe admin du projet
 		$data["utilisateur"] = $this->profil_model->recuperer_mes_donnees();
 		if(! $this->utilisateur_model->verifier_admin_projet($idprojet,$data["utilisateur"]->idutilisateur)) {
 			$this->session->set_flashdata('erreur', 'Vous n\'&ecirc;tes pas administrateur de ce projet.');
 			redirect("projet/accueil".$idprojet);
 		}
 
-		//vérification du formulaire
+		//vï¿½rification du formulaire
 		$this->load->library('form_validation');
 						
 		$this->form_validation->set_rules('type', 'Nom du groupe', 'required|max_length[45]');
 		
 		/*$this->form_validation->set_rules('lecture', 'Droit de lecture', 'required');
-		$this->form_validation->set_rules('ecriture', 'Droit d\'écriture', 'required');
+		$this->form_validation->set_rules('ecriture', 'Droit d\'ï¿½criture', 'required');
 		$this->form_validation->set_rules('upload', 'Droit d\'upload', 'required');*/
 
 
-		//si formulaire envoyé et bon
+		//si formulaire envoyï¿½ et bon
 		if ($this->form_validation->run() == TRUE){	
 			if(!($droits = $this->input->post("droits")) || ! is_array($droits) ){
 				$lecture  = "0";
@@ -264,7 +265,7 @@ class Projet extends CI_Controller {
 			if(is_numeric($idgroupe)) {
 				echo "succes:".$idgroupe.":";
 			}
-		//si formulaire incomplet ou non envoyé	
+		//si formulaire incomplet ou non envoyï¿½	
 		}else{
 			echo validation_errors();
 		}
@@ -272,20 +273,20 @@ class Projet extends CI_Controller {
 
 	//modification des droits d'un groupe
 	public function modifier_groupe($idprojet){
-		//vérifie si l'utilisateur est dans le groupe admin du projet
+		//vï¿½rifie si l'utilisateur est dans le groupe admin du projet
 		$data["utilisateur"] = $this->profil_model->recuperer_mes_donnees();
 		if(! $this->utilisateur_model->verifier_admin_projet($idprojet,$data["utilisateur"]->idutilisateur)) {
 			$this->session->set_flashdata('erreur', 'Vous n\'&ecirc;tes pas administrateur de ce projet.');
 			redirect("projet/accueil".$idprojet);
 		}
 
-		//vérification du formulaire
+		//vï¿½rification du formulaire
 		$this->load->library('form_validation');
 						
 		$this->form_validation->set_rules('idgroupe', 'Identifiant du Groupe', 'required|callback_verifie_groupe['.$idprojet.']');
 
 
-		//si formulaire envoyé et bon
+		//si formulaire envoyï¿½ et bon
 		if ($this->form_validation->run() == TRUE){	
 			if(!($droits = $this->input->post("droits")) || ! is_array($droits) ){
 				$lecture  = "0";
@@ -301,7 +302,7 @@ class Projet extends CI_Controller {
 													 $ecriture,
 													 $upload);
 			echo "succes";
-		//si formulaire non envoyé ou mal rempli
+		//si formulaire non envoyï¿½ ou mal rempli
 		}else{
 			echo validation_errors();
 		}
@@ -309,7 +310,7 @@ class Projet extends CI_Controller {
 
 	//supprimer un groupe (AJAX)
 	public function supprimer_groupe($idprojet, $idgroupe){
-		//vérifie si l'utilisateur est dans le groupe admin du projet
+		//vï¿½rifie si l'utilisateur est dans le groupe admin du projet
 		$data["utilisateur"] = $this->profil_model->recuperer_mes_donnees();
 		if(! $this->utilisateur_model->verifier_admin_projet($idprojet,$data["utilisateur"]->idutilisateur)) {
 			echo "Droits insufisants";
@@ -324,7 +325,7 @@ class Projet extends CI_Controller {
 
 	//ajouter un membre dans un groupe
 	public function ajouter_membre($idprojet){
-		//vérifie si l'utilisateur est dans le groupe admin du projet
+		//vï¿½rifie si l'utilisateur est dans le groupe admin du projet
 		$data["utilisateur"] = $this->profil_model->recuperer_mes_donnees();
 		if(! $this->utilisateur_model->verifier_admin_projet($idprojet,$data["utilisateur"]->idutilisateur)) {
 			$this->session->set_flashdata('erreur', 'Vous n\'&ecirc;tes pas administrateur de ce projet.');
@@ -336,7 +337,7 @@ class Projet extends CI_Controller {
 		$this->form_validation->set_rules('groupe', 'Groupe', 'required|callback_verifie_groupe['.$idprojet.']');
 		$this->form_validation->set_rules('utilisateurs', 'Liste de utilisateurs', 'required');
 
-		//si formulaire envoyé et bon
+		//si formulaire envoyï¿½ et bon
 		if ($this->form_validation->run() == TRUE){	
 			$utilisateurs = $this->utilisateur_model->recuperer_id_par_noms($this->input->post("utilisateurs"));
 			if(empty($utilisateurs)){
@@ -351,10 +352,10 @@ class Projet extends CI_Controller {
 
 	//supprimer un membre d'un projet (AJAX)
 	public function supprimer_membre($idprojet, $idutilisateur){
-		//vérifie si l'utilisateur est dans le groupe admin du projet
+		//vï¿½rifie si l'utilisateur est dans le groupe admin du projet
 		$data["utilisateur"] = $this->profil_model->recuperer_mes_donnees();
 		if(! $this->utilisateur_model->verifier_admin_projet($idprojet,$data["utilisateur"]->idutilisateur)) {
-			echo "Vous n'étes pas admin de ce projet.";
+			echo "Vous n'ï¿½tes pas admin de ce projet.";
 			return false;
 		}
 		if($this->projet_model->supprimer_membre($idutilisateur, $idprojet)) {
@@ -367,7 +368,7 @@ class Projet extends CI_Controller {
 	//changer un membre de groupe
 	public function modifier_membre ($idprojet){
 
-		//vérification formulaire
+		//vï¿½rification formulaire
 		$this->load->helper(array('form', 'url'));
 		$this->load->library('form_validation');
 
@@ -375,14 +376,14 @@ class Projet extends CI_Controller {
 		$this->form_validation->set_rules('idancgroupe', 'Ancien groupe', 'required');
 		$this->form_validation->set_rules('idnouvgroupe', 'Nouveau groupe', 'required');
 
-		//si formulaire envoyé et bon
+		//si formulaire envoyï¿½ et bon
 		if ($this->form_validation->run() == TRUE){	
 			$this->project_model->modifier_groupe_mbr($this->input->post("idutilisateur",TRUE),
 													  $idprojet, 
 													  $this->input->post("idutilisateur",TRUE), 
 													  $this->input->post("idnouvgroupe",TRUE));
 			redirect("projet/gestion/".$idprojet);
-		//si formulaire non envoyé ou mal rempli
+		//si formulaire non envoyï¿½ ou mal rempli
 		}else{
 			$data = array("idprojet" => $idprojet);
 			$this->template->render('projet/modifiermembre',$data);
@@ -390,11 +391,11 @@ class Projet extends CI_Controller {
 	}
 
 
-	//Fonctions de callback de vérification de formulaire
+	//Fonctions de callback de vï¿½rification de formulaire
 
 	public function verifie_groupe($idgroupe, $idprojet)
 	{
-		//vérifie si le groupe existe et appartient au projet
+		//vï¿½rifie si le groupe existe et appartient au projet
 		if($this->projet_model->groupe_appartient($idgroupe,$idprojet)){
 			return TRUE;
 		} else {
@@ -407,19 +408,19 @@ class Projet extends CI_Controller {
 	// GESTION REPERTOIRES //
 	/////////////////////////
 
-	// Nouveau répertoire
+	// Nouveau rï¿½pertoire
 	public function creer_repertoire() {
 
-		// On définit les règle du formulaire
+		// On dï¿½finit les rï¿½gle du formulaire
 		$this->load->library('form_validation');
 		
 		$this->form_validation->set_rules('idprojet', 'projet', 'required');
-		$this->form_validation->set_rules('nom', 'nom du répertoire', 'required');
+		$this->form_validation->set_rules('nom', 'nom du rï¿½pertoire', 'required');
 
-		// Si le formulaire a été correctement envoyé
+		// Si le formulaire a ï¿½tï¿½ correctement envoyï¿½
 		if ($this->form_validation->run() == TRUE) {	
 
-			// On récupère les variables du formulaire
+			// On rï¿½cupï¿½re les variables du formulaire
 			$idprojet = $this->input->post("idprojet", TRUE);
 			$idpere   = $this->input->post("idpere", TRUE);
 			$nom 	  = $this->input->post("nom", TRUE);
@@ -436,7 +437,7 @@ class Projet extends CI_Controller {
 			// Etape 2 : Droits du groupe ?
 			$droitsgrp = $this->projet_model->verifier_droit_groupe($grpUtil);
 
-			// Si les droits sont accordés
+			// Si les droits sont accordï¿½s
 			if($droitsgrp->upload == TRUE) {
 				$this->load->model("repertoire_model");
 
@@ -455,17 +456,17 @@ class Projet extends CI_Controller {
 	// Supprimer repertoires
 	public function supprimer_repertoire($idrepertoire) {
 
-		// Vérifie que le nom du répertoire n'est pas null
+		// Vï¿½rifie que le nom du rï¿½pertoire n'est pas null
 		if(is_null($idrepertoire)) {
 			$this->session->set_flashdata('erreur', 'Il n\'est pas possible de supprimer la racine d\'un projet.');
 			redirect("mes-projets");
 		}
 
-		// On récupère les informations de répertoire
+		// On rï¿½cupï¿½re les informations de rï¿½pertoire
 		$this->load->model("repertoire_model");
 		$repData = $this->repertoire_model->infos_repertoire($idrepertoire);
 
-		// Vérifie que répertoire vide
+		// Vï¿½rifie que rï¿½pertoire vide
 		if($this->verifie_repertoire_vide($idrepertoire) == false) {
 			$this->session->set_flashdata('erreur', 'Le r&eacute;pertoire n\'est pas vide.');
 			redirect("projet/documents/".$repData->idprojet."/".$idrepertoire);
@@ -485,7 +486,7 @@ class Projet extends CI_Controller {
 			} else {
 				$droitsgrp = $this->projet_model->verifier_droit_groupe($grpUtil);
 
-				// Si les droits sont accordés
+				// Si les droits sont accordï¿½s
 				if($droitsgrp->upload == TRUE) {
 					$this->load->model("repertoire_model");
 
@@ -524,7 +525,7 @@ class Projet extends CI_Controller {
 		$idprojet = $this->input->post("idprojet", TRUE);
 		
 		//On recupere les donnes du post
-		//On cherche a identifier les checkbox validé
+		//On cherche a identifier les checkbox validï¿½
 		
 		// On fait le tri entre repertoire et document
 		
