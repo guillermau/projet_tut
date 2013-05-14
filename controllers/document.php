@@ -1,5 +1,5 @@
 <?php
-/*-aperçu (nom,date....)
+/*-aperÃ§u (nom,date....)
 -upload
 -versioning
 -suppression
@@ -14,7 +14,7 @@ public function __construct(){
 	parent::__construct();
 	if(! $this->profil_model->verifier_connexion()) {
 		if(is_ajax) {
-			echo "echec: utilisateur non connecté";
+			echo "echec: utilisateur non connectÃ©";
 		} else {
 			redirect("session/connexion");
 		}
@@ -22,17 +22,17 @@ public function __construct(){
 	$this->load->model("document_model");
 	$this->load->model("projet_model");
 
-	//récuperer les données de l'utilisateur
+	//rÃ©cuperer les donnÃ©es de l'utilisateur
 	$this->donnees = $this->profil_model->recuperer_mes_donnees();
 }
 
-//aperçu des infos du document
+//aperÃ§u des infos du document
 public function apercu($iddoc){
 	$this->load->model('utilisateur_model');
 	$this->load->model('type_model');
 	$this->load->model('tag_model');
 
-	//vérifie les droits de l'utilisateur
+	//vÃ©rifie les droits de l'utilisateur
 	$droits = $this->utilisateur_model->verifier_droit ($iddoc,$this->donnees->idutilisateur);
 
 	if(!empty($droits) && $droits->lecture == TRUE){
@@ -63,20 +63,20 @@ public function upload($idprojet){
 	$this->load->model("upload_model");
 	$this->load->model("utilisateur_model");
 	
-	//vérifier si utilisateur est membre du projet
+	//vÃ©rifier si utilisateur est membre du projet
 	$grpUtil = $this->utilisateur_model->verifier_acces_projet($idprojet, $this->donnees->idutilisateur);
 	if($grpUtil == false){
 		$this->session->set_flashdata('erreur', 'non membre');
 		//redirect("mes-projets");
-		echo "Vous n'êtes pas membre de ce projet";
-	//s'il est membre vérifier formulaire	
+		echo "Vous n'Ãªtes pas membre de ce projet";
+	//s'il est membre vÃ©rifier formulaire	
 	}else{
 		$this->load->library('form_validation');
 		
 		$this->form_validation->set_rules('utilisateur', 'Utilisateur', 'required');
 		$this->form_validation->set_rules('projet', 'Projet', 'required');
 
-		//si formulaire bon, vérifer les droits du groupe de l'utilisateur
+		//si formulaire bon, vÃ©rifer les droits du groupe de l'utilisateur
 		if ($this->form_validation->run() == TRUE){	
 			$droitsgrp = $this->projet_model->verifier_droit_groupe($grpUtil);
 			if($droitsgrp->upload == TRUE){
@@ -121,7 +121,7 @@ public function nlrc_upload($iddoc){
 	'</span><span data-meta="date-maj">'.date("d/m/Y h:i:s",strtotime($doc->creation)).'</span></div></a></li>';
 }
 
-//mettre à jour un document (le remplacer)
+//mettre Ã  jour un document (le remplacer)
 public function versioning($iddoc, $input, $idprojet, $idrepertoire){
 	
 	$data = $this->document_model->recuperer_document($iddoc);
@@ -139,7 +139,7 @@ public function versioning($iddoc, $input, $idprojet, $idrepertoire){
 											   $idutilisateur,
 											   $idrepertoire,
 											   TRUE);
-			echo "document remplacé";
+			echo "document remplacÃ©";
 		}elseif($droits->ecriture == FALSE){
 			$this->session->set_flashdata('erreur', 'droits insuffisants');
 			redirect("projet/documents");
@@ -189,12 +189,12 @@ public function modifier($upload = false){
 
 // Formulaire de gestion
 public function gestion($iddoc){
-	// On récupère la liste des droits
+	// On rÃ©cupÃ¨re la liste des droits
 	$this->load->model("utilisateur_model");
 	$this->load->model("repertoire_model");
 	$this->load->model("tag_model");
 
-	// Récupération des infos
+	// RÃ©cupÃ©ration des infos
 	$data["document"]    = $this->document_model->recuperer_document($iddoc);
 	$idprojet		     = $data["document"]->idprojet;
 	$data["groupes"]     = $this->document_model->liste_droit_projet_document($iddoc, $idprojet);
@@ -206,7 +206,7 @@ public function gestion($iddoc){
 	$grpUtil = $this->utilisateur_model->verifier_acces_projet($idprojet, $this->donnees->idutilisateur);
 	$droits = $this->utilisateur_model->verifier_droit($iddoc, $this->donnees->idutilisateur);
 
-	// On vérifie
+	// On vÃ©rifie
 	if($grpUtil == false) {
 		$this->session->set_flashdata('erreur', 'Vous n\'&ecirc;tes pas membre de ce projet.');
 		redirect("projet/documents/".$idprojet);
@@ -216,26 +216,26 @@ public function gestion($iddoc){
 		redirect("projet/documents/".$idprojet);
 	}	
 
-	//vérification du formulaire
+	//vÃ©rification du formulaire
 	$this->load->library('form_validation');
 	$this->form_validation->set_rules('description', 'Description', 'required');
 
 	//Si une requete ajax
 	if(is_ajax()){
-		//si formulaire envoyé et bon
+		//si formulaire envoyÃ© et bon
 		if ($this->form_validation->run() == TRUE){	
 			$this->document_model->modifier_document($iddoc, $this->input->post("description",TRUE), $this->input->post("tags",TRUE));
 			echo "succes";
-		//si formulaire incomplet ou non envoyé	
+		//si formulaire incomplet ou non envoyÃ©	
 		}else{
 			 echo validation_errors();
 		}	
 	} else {
-		//si formulaire envoyé et bon
+		//si formulaire envoyÃ© et bon
 		if ($this->form_validation->run() == TRUE){	
 			$this->document_model->modifier_document($iddoc, $this->input->post("description",TRUE), $this->input->post("tags",TRUE));
 			redirect("document/gestion/".$idprojet."/".$iddoc);
-		//si formulaire incomplet ou non envoyé	
+		//si formulaire incomplet ou non envoyÃ©	
 		}else{
 			$this->template->render('document/gestion', $data);
 		}
@@ -248,14 +248,14 @@ public function supprimer($iddoc){
 	$doc = $this->document_model->recuperer_document($iddoc);
 
 	$droits = $this->utilisateur_model->verifier_droit($iddoc, $this->donnees->idutilisateur);
-
+	
 	if($droits->ecriture || $doc->idutilisateur == $this->donnees->idutilisateur) {
-		$this->document_model->supprimer_document($iddoc);
+		$recup = $this->document_model->supprimer_document($iddoc);
 		$this->session->set_flashdata('succes', 'Document supprim&eacute;.');
-		redirect("projet/documents/".$doc->idprojet);
+		redirect("projet/documents/".$doc->idprojet."/".$doc->idrepertoire);
 	} else {
 		$this->session->set_flashdata('echec', 'Vous n\'avez pas les droits suffisants');
-		redirect("projet/documents/".$doc->idprojet);
+		redirect("projet/documents/".$doc->idprojet."/".$doc->idrepertoire);
 	}
 
 }
@@ -263,28 +263,28 @@ public function supprimer($iddoc){
 // Deplacement document
 public function deplacer($iddoc) {
 
-	// Chargements models nécéssaires
+	// Chargements models nÃ©cÃ©ssaires
 	$this->load->model("utilisateur_model");
 
-	// Récuprération des données
+	// RÃ©cuprÃ©ration des donnÃ©es
 	$document    = $this->document_model->recuperer_document($iddoc);
 	$droits      = $this->utilisateur_model->verifier_droit($iddoc, $this->donnees->idutilisateur);
 
-	// Vérification des droits
-	// Droits accordés
+	// VÃ©rification des droits
+	// Droits accordÃ©s
 	if($droits->ecriture || $document->idutilisateur == $this->donnees->idutilisateur) {
 
-		// Règles du formulaire
+		// RÃ¨gles du formulaire
 		$this->load->library("form_validation");
 		$this->form_validation->set_rules('idnvdossier', 'Nouveau dossier', 'required|callback_verifie_dossier['.$document->idprojet.']');
 
 		// Si formulaire correct
 		if ($this->form_validation->run() == TRUE) {
 
-			// Éxécution requette
+			// Ã‰xÃ©cution requette
 			$result = $this->document_model->changer_rep($iddoc, $this->input->post("idnvdossier"));
 
-			// Si formulaire envoyé via AJAX
+			// Si formulaire envoyÃ© via AJAX
 			if(is_ajax())
 				echo "success";
 			else {
@@ -299,7 +299,7 @@ public function deplacer($iddoc) {
 
 		} else {
 
-			// Si formulaire envoyé via AJAX
+			// Si formulaire envoyÃ© via AJAX
 			if(is_ajax())
 				echo validation_errors();
 			else {
@@ -315,7 +315,7 @@ public function deplacer($iddoc) {
 	}
 }
 
-// Vérification dossier
+// VÃ©rification dossier
 public function verifie_dossier($idnvdossier, $idprojet) {
 	if ($idnvdossier == 0)
 		return true;
@@ -324,16 +324,42 @@ public function verifie_dossier($idnvdossier, $idprojet) {
 	return $this->repertoire_model->verifier_repertoire($idnvdossier, $idprojet);
 }
 
+// TÃ©lÃ©charger un fichier // En cours (Guillaume)
+public function telecharger($iddoc){
+	// RÃ©cupÃ©ration des infos
+	$this->load->model("utilisateur_model");
+	$this->load->library('zip');
+
+	$doc = $this->document_model->recuperer_document($iddoc);
+
+	$droits = $this->utilisateur_model->verifier_droit($iddoc, $this->donnees->idutilisateur);
+
+	if($droits->ecriture || $doc->idutilisateur == $this->donnees->idutilisateur) {
+		
+		$this->document_model->telecharger_zip ($iddoc,$doc->idrepertoire); // temporaire
+
+		$this->zip->download('download.zip');
+		$this->session->set_flashdata('succes', 'Document telecharger');
+		redirect("projet/documents/".$doc->idprojet);
+	} else {
+		$this->session->set_flashdata('echec', 'Vous n\'avez pas les droits suffisants');
+		redirect("projet/documents/".$doc->idprojet);
+	}
+
+}
+
+
+
 ////////////////////////
 // GESTION DES DROITS //
 ////////////////////////
 
 //modification des droits d'un groupe
 public function modifier_groupe($iddoc){
-	// On récupère la liste des droits
+	// On rÃ©cupÃ¨re la liste des droits
 	$this->load->model("utilisateur_model");
 
-	// Récupération des infos
+	// RÃ©cupÃ©ration des infos
 	$data["document"] = $this->document_model->recuperer_document($iddoc);
 	$idprojet = $data["document"]->idprojet;
 
@@ -344,12 +370,12 @@ public function modifier_groupe($iddoc){
 		echo "Vous n\'avez pas les droits sur ce document !";
 
 	} else {
-		//vérification du formulaire
+		//vÃ©rification du formulaire
 		$this->load->library('form_validation');	
 		$this->form_validation->set_rules('idgroupe', 'Identifiant du Groupe', 'required|callback_verifie_groupe['.$idprojet.']');
 
 
-		//si formulaire envoyé et bon
+		//si formulaire envoyÃ© et bon
 		if ($this->form_validation->run() == TRUE){	
 			if(!($droits = $this->input->post("droits")) || ! is_array($droits) ){
 				$lecture       = "0";
@@ -364,17 +390,17 @@ public function modifier_groupe($iddoc){
 			$this->document_model->modification_droit_document($iddoc, $this->input->post("idgroupe",TRUE), $visualisation,
 													 				$lecture, $ecriture);
 			echo "succes";
-		//si formulaire non envoyé ou mal rempli
+		//si formulaire non envoyÃ© ou mal rempli
 		} else {
 			echo validation_errors();
 		}
 	}
 }
 
-// Vérification existence groupe
+// VÃ©rification existence groupe
 public function verifie_groupe($idgroupe, $idprojet)
 {
-	//vérifie si le groupe existe et appartient au projet
+	//vÃ©rifie si le groupe existe et appartient au projet
 	if($this->projet_model->groupe_appartient($idgroupe,$idprojet)){
 		return TRUE;
 	} else {
