@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://umr5558-bddeco.univ-lyon1.fr/';
+$config['base_url']	= 'http://umr5558-bddecodev.univ-lyon1.fr/';
 // $config['base_url']	= 'http://localhost:8080/';
 /*
 |--------------------------------------------------------------------------
