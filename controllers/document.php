@@ -338,6 +338,29 @@ public function telecharger($iddoc){
 
 	if($droits->ecriture || $doc->idutilisateur == $this->donnees->idutilisateur) {
 		
+		$this->document_model->telecharger_document ($iddoc); // temporaire
+
+		$this->zip->download('download.zip');
+		$this->session->set_flashdata('succes', 'Document telecharger');
+		redirect("projet/documents/".$doc->idprojet);
+	} else {
+		$this->session->set_flashdata('echec', 'Vous n\'avez pas les droits suffisants');
+		redirect("projet/documents/".$doc->idprojet);
+	}
+
+}
+
+public function telecharger_zip($iddoc){
+	// Récupération des infos
+	$this->load->model("utilisateur_model");
+	$this->load->library('zip');
+
+	$doc = $this->document_model->recuperer_document($iddoc);
+
+	$droits = $this->utilisateur_model->verifier_droit($iddoc, $this->donnees->idutilisateur);
+
+	if($droits->ecriture || $doc->idutilisateur == $this->donnees->idutilisateur) {
+		
 		$this->document_model->telecharger_zip ($iddoc,$doc->idrepertoire); // temporaire
 
 		$this->zip->download('download.zip');
