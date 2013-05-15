@@ -76,7 +76,7 @@ class Repertoire_model extends CI_Model {
 	
 		$data = $this->db->select("*")
     					->from($this->repertoires)
-    					->where("idrepertoire", $idrepertoire)
+    					->where("idrepertoire", $idrep)
     					->get()
     					->row();
     					
@@ -194,13 +194,14 @@ class Repertoire_model extends CI_Model {
                 while(!isnull($idrep))
                 {
                     $info = infos_repertoire($idrep);
+                    
                     $name = $info->nom;
-                    $lien = chemin_clic_rep($idrep);
-                    $idrep = $info->pere;
+                    $lien = chemin_clic_rep($info->idrepertoire);
+                    
                     $ligne = array();
                     $ligne["lien"]=$lien;
                     $ligne["nom"]=$name;
-                    $data[] = $ligne;
+                    $data = array_merge($data,$ligne);
                     
                 }
             return $data;       
