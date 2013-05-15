@@ -200,7 +200,7 @@ class Repertoire_model extends CI_Model {
                     $ligne = array();
                     $ligne["lien"]=$lien;
                     $ligne["nom"]=$name;
-                    $data = array_merge($data, $ligne);
+                    $data[] = $ligne;
                     
                 }
             return $data;       
