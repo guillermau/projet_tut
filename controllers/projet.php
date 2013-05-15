@@ -132,6 +132,7 @@ class Projet extends CI_Controller {
 		$data["repertoires"] = array_merge($data["repertoires"], $this->repertoire_model->lister_repertoires($idprojet, $idrep));
 		$data["idprojet"] = $idprojet;
 		$data["idrep"]    = $idrep;
+                //$data["arborescence"] = $this->repertoire_model->arborescence($idrep,$idprojet);
 
 		// Fonction supprimer ?
 		$data["emptyrep"] = $this->verifie_repertoire_vide($idrep);
