@@ -133,8 +133,8 @@ class Projet extends CI_Controller {
 		$data["idprojet"] = $idprojet;
 		$data["idrep"]    = $idrep;
                 
-                $data["idperes"] = array();
-                $data["idperes"] = array_merge($data["idperes"], $this->repertoire_model->arborescence($idrep, $idprojet));
+               /* $data["idperes"] = array();
+                $data["idperes"] = array_merge($data["idperes"], $this->repertoire_model->arborescence($idrep, $idprojet));*/
                 
                 
 
