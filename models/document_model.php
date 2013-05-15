@@ -348,8 +348,6 @@ class Document_model extends CI_Model {
 		
 		$this->load->model('upload_model');
 		
-		
-		
 		if ($document->idrepertoire == '0')
 		{ $chemin = "uploads/projets/".$document->idprojet."/".$document->chemin_fichier;}
 		else 
