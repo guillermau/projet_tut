@@ -73,8 +73,8 @@
     
     <?php
         echo '<div class="btn-toolbar" style="text-align:left"><div class="btn-group">';
-    
-	echo '</div>';
+        
+	echo '</div></div>';
     ?>
    
     <?php 
