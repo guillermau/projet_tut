@@ -191,7 +191,7 @@ class Repertoire_model extends CI_Model {
             {}
             else
             {
-                while(isnull($idrep))
+                while(!isnull($idrep))
                 {
                     $info = infos_repertoire($idrep);
                     $name = $info->nom;
