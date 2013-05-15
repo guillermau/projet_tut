@@ -71,7 +71,11 @@
     <input type="hidden" name="idprojet" id="idprojet" value="<?php echo $idprojet; ?>" /> <!-- Ajout -->
     <input type="hidden" name="idrep_courant" id="idrep_courant" value="<?php echo $idrep; ?>" /> <!-- Ajout -->
     
+    <?php
+        echo '<div class="btn-toolbar" style="text-align:left"><div class="btn-group">';
     
+	echo '</div>';
+    ?>
    
     <?php 
       // Si aucun dossier ni répertoire n'est trouvé
