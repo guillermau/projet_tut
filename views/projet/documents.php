@@ -72,14 +72,7 @@
     <input type="hidden" name="idrep_courant" id="idrep_courant" value="<?php echo $idrep; ?>" /> <!-- Ajout -->
     
     
-    <?php
-    
-    
-    //Affichage de l'arborescence
-    
-    
-    ?>
-    
+   
     <?php 
       // Si aucun dossier ni répertoire n'est trouvé
       if(empty($documents) && empty($repertoires)) {
