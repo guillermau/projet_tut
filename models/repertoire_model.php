@@ -183,6 +183,32 @@ class Repertoire_model extends CI_Model {
 
 		}
 	}
+        
+        public function arborescence($idrep, $idproj){
+            
+            $data = array();
+            if(isnull($idrep))
+            {}
+            else
+            {
+                while(isnull($idrep))
+                {
+                    $info = infos_repertoire($idrep);
+                    $name = $info->nom;
+                    $lien = chemin_clic_rep($idrep);
+                    $idrep = $info->pere;
+                    $ligne = array();
+                    $ligne["lien"]=$lien;
+                    $ligne["nom"]=$name;
+                    $data = array_merge($data, $ligne);
+                    
+                }
+            return $data;       
+                
+            }
+            
+        }        
+        
 }
 
 
