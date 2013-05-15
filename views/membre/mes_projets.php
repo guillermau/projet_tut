@@ -38,7 +38,7 @@
         } else {
           foreach($projets as $p){
             echo'
-            <li><a href="'.site_url('projet/accueil/'.$p->idprojet).'">
+            <li><a href="'.site_url('projet/documents/'.$p->idprojet).'">
               <div class="image"><img src="';
             //Affichage de l'image (vide si aucune définie)
             if($p->image == NULL) {
