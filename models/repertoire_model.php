@@ -18,6 +18,50 @@ class Repertoire_model extends CI_Model {
     					->get()
     					->row();
     }
+    public function nom_repertoire($idrep){
+        return $this->db->select("nom")
+    					->from($this->repertoires)
+    					->where("idrepertoire", $idrep)
+    					->get()
+    					->result();
+    }
+    
+    public function idprojet_repertoire($idrep){
+        return $this->db->select("idprojet")
+    					->from($this->repertoires)
+    					->where("idrepertoire", $idrep)
+    					->get()
+    					->result();
+    }
+    
+    // Retourner id du pere
+	public function pere_repertoire($idproj, $idrep) {
+		return $data = $this->db->select("*")
+						 ->from("repertoires")
+						 ->where("idprojet", $idproj)
+						 ->where("idrepertoire", $idrep)
+						 ->get()
+						 ->result();
+                
+        }
+    
+        //Liste les parents d'un repertoire
+        public function arborescence($idprojet,$idrep){
+            $data = array();
+                   
+            if($idrep == null)
+                return $data;
+            else{
+                $data[]= "$this->nom_repertoire($idrep)";
+                $idpere = $this->pere_repertoire($idprojet, $idrep);
+                while($idpere!=null){
+                    $data[]= "$this->nom_repertoire(idpere)";
+                    $idpere = $this->pere_repertoire($idprojet,$idrep);
+                }
+                
+            }       
+        }
+         
 
 	// Liste de tous les répertoires d'un projet
 	public function lister_repertoires_projet($idproj) {
@@ -40,23 +84,13 @@ class Repertoire_model extends CI_Model {
 						->result();
 	}
 
-	// Retourner id du pere
-	public function pere_repertoire($idproj, $idrep) {
-		$data = $this->db->select("pere")
-						 ->from("repertoires")
-						 ->where("idprojet", $idproj)
-						 ->where("idrepertoire", $idrep)
-						 ->get()
-						 ->row();
-
-		return $data->pere;
-	}
+	
 	
 	// Retourne le chemin physique du repertoire // Guillaume
 	public function chemin_phys_rep($idrep) {
 		$data = $this->db->select("*")
     					->from($this->repertoires)
-    					->where("idrepertoire", $idrepertoire)
+    					->where("idrepertoire", $idrep)
     					->get()
     					->row();
 
@@ -74,14 +108,8 @@ class Repertoire_model extends CI_Model {
 	// Retourne l'adresse de l'application du repertoire // Guillaume
 	public function chemin_clic_rep($idrep) {
 	
-		$data = $this->db->select("*")
-    					->from($this->repertoires)
-    					->where("idrepertoire", $idrep)
-    					->get()
-    					->row();
-    					
-
-		$chemin = "projet/documents/".$data->idprojet."/".$data->idrepertoire;
+		
+		$chemin = "projet/documents/".'$this->idprojet_repertoire($idrep)'."/".'$idrep';
 		return $chemin;
 	}
 
@@ -184,33 +212,13 @@ class Repertoire_model extends CI_Model {
 		}
 	}
         
-        public function arborescence($idrep, $idproj){
-            
-            $data = array();
-            if(isnull($idrep))
-            {}
-            else
-            {
-                while(!isnull($idrep))
-                {
-                    $info = infos_repertoire($idrep);
-                    
-                    $name = $info->nom;
-                    $lien = chemin_clic_rep($info->idrepertoire);
-                    
-                    $ligne = array();
-                    $ligne["lien"]=$lien;
-                    $ligne["nom"]=$name;
-                    $data = array_merge($data,$ligne);
-                    
-                }
-            return $data;       
-                
-            }
-            
-        }        
         
-}
+            
+            
+           
+}        
+        
+
 
 
 ?>
