@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="<?php echo site_url("css/bootstrap-responsive.css"); ?>">
   <link rel="stylesheet" href="<?php echo site_url("css/south-street/jquery-ui-1.9.1.custom.min.css"); ?>">
   <link rel="stylesheet" href="<?php echo site_url("css/style.css"); ?>">
-  <link rel="stylesheet" href="<?php echo site_url("css/arbo.css"); ?>">
+  
   <!-- More ideas for your <head> here: h5bp.com/d/head-Tips -->
 
   <!-- All JavaScript at the bottom, except this Modernizr.
@@ -80,7 +80,7 @@
   <?php echo $content; ?>
 
   <footer>
-
+     
   </footer>
 
 

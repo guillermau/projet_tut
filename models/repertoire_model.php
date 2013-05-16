@@ -26,7 +26,7 @@ class Repertoire_model extends CI_Model {
     					->get()
     					->row()
                                         ;
-        return $data->nom;
+        return "$data->nom";
     }
     
     public function idprojet_repertoire($idrep){

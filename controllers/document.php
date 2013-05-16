@@ -254,10 +254,10 @@ public function supprimer($iddoc){
 	if($droits->ecriture || $doc->idutilisateur == $this->donnees->idutilisateur) {
 		$recup = $this->document_model->supprimer_document($iddoc);
 		$this->session->set_flashdata('succes', 'Document supprim&eacute;.');
-		redirect("projet/documents/".$doc->idprojet."/".$doc->idrepertoire);
+		redirect("projet/documents/".$doc->idprojet);
 	} else {
 		$this->session->set_flashdata('echec', 'Vous n\'avez pas les droits suffisants');
-		redirect("projet/documents/".$doc->idprojet."/".$doc->idrepertoire);
+		redirect("projet/documents/".$doc->idprojet);
 	}
 
 }

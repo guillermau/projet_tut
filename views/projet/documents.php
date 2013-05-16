@@ -33,7 +33,7 @@
     </div>
 
     <div class="page-header">
-      <h1><?php echo $projet->nom;?><small> Accueil</small></h1>
+      <h1><?php echo $projet->nom;?><small> Documents</small></h1>
     </div>
 
     <?php if($this->session->flashdata('erreur')): ?>
@@ -116,7 +116,10 @@
 
               echo '<li class="'.$doc->type->type.'"><a class="downlink" target="_blank" href="'.$chemin.'"><img src="'.site_url("img/download.png").'" width="16" height="16" /></a>';
               echo '<input type="checkbox" name="document'.$doc->iddocument.'" id="document'.$doc->iddocument.'"  />';  // Ajout
-              echo '<a href="'.site_url("document/apercu/".$doc->iddocument).'">'.$doc->nom_original.'<div class="meta"><span data-meta="proprietaire">'.$membres[$doc->idutilisateur]->nom.'</span><br/><span data-meta="date-maj">'.date("d/m/Y h:i:s",strtotime($doc->maj)).'</span><span data-meta="date-maj">'.date("d/m/Y h:i:s",strtotime($doc->creation)).'</span></div></a></li>';
+              if($membres[$doc->idutilisateur] != null){
+                $user = $membres[$doc->idutilisateur]->nom;
+              }else $user = "ERREUR SUPPRIMER FICHIER ET RE-UPLOADER";
+              echo '<a href="'.site_url("document/apercu/".$doc->iddocument).'">'.$doc->nom_original.'<div class="meta"><span data-meta="proprietaire">'.$user.'</span><br/><span data-meta="date-maj">'.date("d/m/Y h:i:s",strtotime($doc->maj)).'</span><span data-meta="date-maj">'.date("d/m/Y h:i:s",strtotime($doc->creation)).'</span></div></a></li>';
             }
           }
         }
