@@ -72,11 +72,12 @@
     <input type="hidden" name="idrep_courant" id="idrep_courant" value="<?php echo $idrep; ?>" /> <!-- Ajout -->
     
     <?php
-        echo '<div class="btn-toolbar" style="text-align:left"><div class="btn-group">';
-        foreach($arborescence as $arbo){
-            echo "<button class=\"btn\" id=\"nouv-rep\">$arbo</button>";
+        echo '<div id="arborescence"><ul>';
+        foreach($arborescence as $nom => $url){
+            echo "<li><a href=".site_url($url).">$nom</a></li>";
         }
-        echo '</div></div>';?>
+        echo '</ul></div>';
+    ?>
    
     <?php 
       // Si aucun dossier ni répertoire n'est trouvé

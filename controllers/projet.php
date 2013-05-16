@@ -121,7 +121,7 @@ class Projet extends CI_Controller {
 		$data["projet"]     = $this->projet_model->recuperer_projet($idprojet);
 		$data["documents"]  = $this->document_model->documents_projet_et_droits($idprojet, $idrep, $data["utilisateur"]->idutilisateur);
 		$data["membres"]    = $this->projet_model->lister_membres($idprojet);
-		$data["repertoires"] = array();
+		$data["repertoires"]= array();
 		/*if(!is_null($idrep)) {
 			$rep          	   = new stdClass();
 			$rep->nom 		   = "Parent";
@@ -135,7 +135,7 @@ class Projet extends CI_Controller {
                 
                 $data["arborescence"] = $this->repertoire_model->arborescence($idprojet,$idrep);
 
-                
+                $data["test"]= $this->repertoire_model->arborescence($idprojet,$idrep);
 
 		// Fonction supprimer ?
 		$data["emptyrep"] = $this->verifie_repertoire_vide($idrep);
