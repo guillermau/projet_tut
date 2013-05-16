@@ -54,8 +54,11 @@ class Repertoire_model extends CI_Model {
         
         //Liste les parents d'un repertoire
         public function arborescence($idprojet,$idrep){
+           $this->load->model("projet_model");
+            
             $data = array();  
             if ($idrep == null){
+                $data[$this->projet_model->recuperer_projet($idprojet)->nom]= $this->chemin_clic_rep($idprojet,null);
                 return $data;
             }
             else{
@@ -65,6 +68,7 @@ class Repertoire_model extends CI_Model {
                     $data[$this->nom_repertoire($idpere)]=$this->chemin_clic_rep($idprojet, $idpere);
                     $idpere = $this->pere_repertoire($idprojet, $idpere);
                 }
+                $data[$this->projet_model->recuperer_projet($idprojet)->nom]= $this->chemin_clic_rep($idprojet,null);
                 return array_reverse($data);
             }
               

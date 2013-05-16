@@ -72,17 +72,20 @@
     <input type="hidden" name="idrep_courant" id="idrep_courant" value="<?php echo $idrep; ?>" /> <!-- Ajout -->
     
     <?php
-        echo '<div id="arborescence"><ul>';
+        echo '<div class="btn-toolbar" style="text-align:left">';
+        echo '<div class="btn-group">';
+        
         foreach($arborescence as $nom => $url){
-            echo "<li><a href=".site_url($url).">$nom</a></li>";
+            echo "<a href=".site_url($url)." class=\"btn btn\">$nom</a>";
         }
-        echo '</ul></div>';
+        echo '</div></div>';
     ?>
    
     <?php 
-      // Si aucun dossier ni répertoire n'est trouvé
+      // Si aucun dossier ni répertoire n"est trouvé
       if(empty($documents) && empty($repertoires)) {
         echo "Aucun document.";
+        echo '</br>';
       }
 
       // Sinon
@@ -105,10 +108,11 @@
         if(!empty($documents)) {
           foreach($documents as $doc){
             if(!empty($doc->droits->lecture) && $doc->droits->lecture == true){
-              if ($doc->idrepertoire == '0')
+              /*if ($doc->idrepertoire == '0')
                 $chemin = site_url("uploads/projets/".$doc->idprojet."/".$doc->chemin_fichier);
               else
-                $chemin = site_url("uploads/projets/".$doc->idprojet."/".$doc->idrepertoire."/".$doc->chemin_fichier);
+                $chemin = site_url("uploads/projets/".$doc->idprojet."/".$doc->idrepertoire."/".$doc->chemin_fichier);*/
+                $chemin= site_url("document/telecharger/".$doc->iddocument);
 
               echo '<li class="'.$doc->type->type.'"><a class="downlink" target="_blank" href="'.$chemin.'"><img src="'.site_url("img/download.png").'" width="16" height="16" /></a>';
               echo '<input type="checkbox" name="document'.$doc->iddocument.'" id="document'.$doc->iddocument.'"  />';  // Ajout
@@ -121,7 +125,8 @@
 
       }
     ?>
-    <button type="submit" name="ordre" class="btn" id="telecharger"/>Telecharger</button> <!-- Ajout -->
+    </br>
+    <button type="submit" name="ordre" value="telecharger" class="btn" id="telecharger"/>Telecharger</button> <!-- Ajout -->
     <button type="submit" name="ordre" class="btn" />Supprimer</button> <!-- Ajout -->
     </form>
     <div class="clearfix"></div>

@@ -132,10 +132,12 @@ class Projet extends CI_Controller {
 		$data["repertoires"] = array_merge($data["repertoires"], $this->repertoire_model->lister_repertoires($idprojet, $idrep));
 		$data["idprojet"] = $idprojet;
 		$data["idrep"]    = $idrep;
+                $temp= $this->projet_model->recuperer_projet($idprojet);
+                $data["nomprojet"]    = $temp->nom;
                 
                 $data["arborescence"] = $this->repertoire_model->arborescence($idprojet,$idrep);
 
-                $data["test"]= $this->repertoire_model->arborescence($idprojet,$idrep);
+                //$data["test"]= $this->repertoire_model->arborescence($idprojet,$idrep);
 
 		// Fonction supprimer ?
 		$data["emptyrep"] = $this->verifie_repertoire_vide($idrep);
@@ -530,22 +532,21 @@ class Projet extends CI_Controller {
 		$idprojet = $this->input->post("idprojet", TRUE);
 		
 		//On recupere les donnes du post
-		//On cherche a identifier les checkbox valid�
+		//On cherche a identifier les checkbox validé
 		
 		// On fait le tri entre repertoire et document
 		
 		
-		if ($_POST['ordre'] == "Telecharger") // On telecharge
+		if ($ordre == "telecharger") // On telecharge
 		{
 		// telecharger_zip ($iddoc,$idracine) pour les documents
 		// telecharger_rep ($idrep,$idracine) pour les repertoires
-		;}
+		$this->actualisation($idprojet,$racine);}
 		else //Ici on supprime
 		{
-		// supprimer_document($iddoc) pour les documents
-		// supprimer_repertoire_plein($idrepertoire)
-		;}
-		$this->actualisation($idprojet,$racine);
+		$this->actualisation($idprojet,null);
+		}
+		
 		
 	}
         

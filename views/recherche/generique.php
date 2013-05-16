@@ -16,12 +16,14 @@
     if(!empty($users)) {
       echo "<h3>Utilisateurs</h3> <table class='table table-striped'>";
       foreach($users as $k => $u){
+          echo '<tr><td>';
         if(empty($u->image)){
           echo '<img width="50" height="50" src="'.site_url("img/profil_vide.png").'" />';
         } else {
           echo '<img width="50" height="50" src="'.site_url("uploads/profil/utilisateur/".$u->image).'" />';
         }
           echo' <a href="'.site_url('utilisateur/apercu/'.$u->idutilisateur).'">'.$u->nom.' '.$u->prenom.'</a>';
+          echo '</td></tr>';          
       }
       echo "</table>";
     }

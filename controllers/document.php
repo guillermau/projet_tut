@@ -330,7 +330,7 @@ public function verifie_dossier($idnvdossier, $idprojet) {
 public function telecharger($iddoc){
 	// Récupération des infos
 	$this->load->model("utilisateur_model");
-	$this->load->library('zip');
+	
 
 	$doc = $this->document_model->recuperer_document($iddoc);
 
@@ -340,7 +340,7 @@ public function telecharger($iddoc){
 		
 		$this->document_model->telecharger_document ($iddoc); // temporaire
 
-		$this->zip->download('download.zip');
+		
 		$this->session->set_flashdata('succes', 'Document telecharger');
 		redirect("projet/documents/".$doc->idprojet);
 	} else {
