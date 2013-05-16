@@ -133,9 +133,8 @@ class Projet extends CI_Controller {
 		$data["idprojet"] = $idprojet;
 		$data["idrep"]    = $idrep;
                 
-               $data["idperes"] = array();
-               $data["idperes"] = array_merge($data["idperes"], $this->repertoire_model->arborescence($idrep, $idprojet));
-                
+                $data["arborescence"] = $this->repertoire_model->arborescence($idprojet,$idrep);
+
                 
 
 		// Fonction supprimer ?
@@ -143,7 +142,8 @@ class Projet extends CI_Controller {
 
 		$this->template->render('projet/documents',$data);
 	}
-
+        
+        
 	//affichage membres du projet
 	public function membres($idprojet){
 		$data["utilisateur"] = $this->profil_model->recuperer_mes_donnees();

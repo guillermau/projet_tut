@@ -73,9 +73,10 @@
     
     <?php
         echo '<div class="btn-toolbar" style="text-align:left"><div class="btn-group">';
-        
-	echo '</div></div>';
-    ?>
+        foreach($arborescence as $arbo){
+            echo "<button class=\"btn\" id=\"nouv-rep\">$arbo</button>";
+        }
+        echo '</div></div>';?>
    
     <?php 
       // Si aucun dossier ni répertoire n'est trouvé
