@@ -50,7 +50,7 @@ $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'bddeco';
-$db['default']['password'] = 'beraledavgeo';
+$db['default']['password'] = '';
 $db['default']['database'] = 'entrepot';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
