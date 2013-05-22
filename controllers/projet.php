@@ -530,23 +530,43 @@ class Projet extends CI_Controller {
 		$ordre = $this->input->post("ordre", TRUE); // On recupere l'ordre
 		$racine = $this->input->post("idrep_courant", TRUE);
 		$idprojet = $this->input->post("idprojet", TRUE);
+                $repertoires = $this->input->post("repertoires", TRUE);;
+                $documents = $this->input->post("$documents", TRUE);;
 		
 		//On recupere les donnes du post
-		//On cherche a identifier les checkbox validé
+		//On cherche a identifier les checkbox valid�
 		
 		// On fait le tri entre repertoire et document
 		
 		
-		if ($ordre == "telecharger") // On telecharge
+		if ( $ordre == "Telecharger") // On telecharge
 		{
-		// telecharger_zip ($iddoc,$idracine) pour les documents
-		// telecharger_rep ($idrep,$idracine) pour les repertoires
-		$this->actualisation($idprojet,$racine);}
+                    // telecharger_zip ($iddoc,$idracine) pour les documents
+                    foreach ($documents as $iddoc)
+                    {
+                        $this->document_model->telecharger_zip($iddoc,$racine);
+                    }
+                    // telecharger_rep ($idrep,$idracine) pour les repertoires
+                    foreach ($repertoires as $idrep)
+                    {
+                        $this->repertoire_model->telecharger_rep ($idrep,$idracine);
+                    }
+                    $this->zip->download('download.zip');
+                    $this->session->set_flashdata('succes', 'Document telecharger');
+		}
 		else //Ici on supprime
 		{
-		$this->actualisation($idprojet,null);
-		}
-		
+                    foreach ($documents as $iddoc)
+                    {
+                        $this->document_model->supprimer($iddoc);
+                    }
+                    foreach ($repertoires as $idrep)
+                    {
+                        //$this->repertoire_model->supprimer_rep ($idrep);
+                    }
+                    
+                }
+		$this->actualisation($idprojet,$racine);
 		
 	}
         

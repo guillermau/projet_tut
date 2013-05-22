@@ -97,7 +97,7 @@
         foreach($repertoires as $rep) {
             
             echo '<li class="repertoire">'; 
-            echo '<input type="checkbox" name="repertoire'.$rep->idrepertoire.'" id="repertoire'.$rep->idrepertoire.'" />'; // Ajout
+            echo '<input type="checkbox" name="repertoires" value="'.$rep->idprojet.'" />'; // Ajout 
             echo '<a  class="replink" href="'.site_url("projet/documents/".$rep->idprojet."/".$rep->idrepertoire).'">'.$rep->nom.'</a>';
             echo '</li>'; //<br />
             
@@ -115,7 +115,7 @@
                 $chemin= site_url("document/telecharger/".$doc->iddocument);
 
               echo '<li class="'.$doc->type->type.'"><a class="downlink" target="_blank" href="'.$chemin.'"><img src="'.site_url("img/download.png").'" width="16" height="16" /></a>';
-              echo '<input type="checkbox" name="document'.$doc->iddocument.'" id="document'.$doc->iddocument.'"  />';  // Ajout
+              echo '<input type="checkbox" name="documents" value="'.$doc->iddocument.'"/>';  // Ajout
               if($membres[$doc->idutilisateur] != null){
                 $user = $membres[$doc->idutilisateur]->nom;
               }else $user = "ERREUR SUPPRIMER FICHIER ET RE-UPLOADER";

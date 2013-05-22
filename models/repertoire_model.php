@@ -130,35 +130,37 @@ class Repertoire_model extends CI_Model {
 	}
 
 	// Telecharger repertoire // Guillaume
-	public function telecharger_rep ($idrep,$idracine) {
-		$this->load->model("document_model");
-		
-		// Controle si presence de documents
-		$data = $this->db->select("iddococument")
-			->from($this->documents)
-			->where("idrepertoire", $idrep)
-			->get()
-			->row();
-			
-		foreach ( $data as $iddoc) // Oui, ajout au zip
-		{
-			telecharger_zip ($iddoc,$idracine);
-		}
-		
-		$data = $this->db->select("idrepertoire")
-			->from($this->repertoires)
-			->where("pere", $idrep)
-			->get()
-			->row();
-			
-		foreach ( $data as $idrep) // Oui, ajout au zip
-		{
-			telecharger_zip ($idrep,$idracine);
-		}
+    // Possibilite de controle des repertoires
+    public function telecharger_rep ($idrep,$idracine) { //
+            $this->load->model("document_model");
 
-		//Fin
-	
-	}
+            // Controle si presence de documents
+            $data = $this->db->select("iddococument")
+                    ->from($this->documents)
+                    ->where("idrepertoire", $idrep)
+                    ->get()
+                    ->row();
+           
+           
+            foreach ( $data as $iddoc) // Oui, ajout au zip
+            {
+                    $this->document_model->telecharger_zip ($iddoc,$idracine);
+            }
+
+            $data = $this->db->select("idrepertoire")
+                    ->from($this->repertoires)
+                    ->where("pere", $idrep)
+                    ->get()
+                    ->row();
+
+            foreach ( $data as $idrepertoire) // Oui, ajout au zip
+            {
+                    $this->telecharger_zip($idrepertoire,$idracine);
+            }
+
+            //Fin
+
+    }
 
 	// Créer répertoire
 	public function creer_repertoire($idprojet, $nom, $idpere = null) {
