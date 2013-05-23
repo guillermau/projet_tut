@@ -546,8 +546,7 @@ class Projet extends CI_Controller {
 		
 		if ( $_POST['ordre'] == "telecharger") // On telecharge
 		{
-                    // telecharger_zip ($iddoc,$idracine) pour les documents
-                   
+                    // On telecharge les documents                
                     foreach ($documents as $iddoc)
                     {
                         $this->document_model->telecharger_zip($iddoc,$racine);
@@ -555,20 +554,21 @@ class Projet extends CI_Controller {
                     
                        
                     
-                    // telecharger_rep ($idrep,$idracine) pour les repertoires
+                    // On telecharge les repertoires
                     foreach ($repertoires as $idrep)
                     {
                         $this->repertoire_model->telecharger_rep($idrep,$racine);
                     }
                         
-                    
+                    // On donne le nom du fichier zip
                     if ($racine == null)
                     {$nom = $this->projet_model->recuperer_projet($idprojet)->nom;}
                     else
                     {$nom = $this->repertoire_model->infos_repertoire($racine)->nom;}
                     
+                    
                     $this->zip->download($nom.'.zip');
-                    $this->session->set_flashdata('succes', 'Document telecharger'.$racine);
+                    
                     
 		}
 		else //Ici on supprime
@@ -583,8 +583,8 @@ class Projet extends CI_Controller {
                     }
                     
                 } 
-                
-		$this->actualisation($idprojet,$racine);
+                $this->session->set_flashdata('succes', 'Document telecharger'.$racine);
+		//$this->actualisation($idprojet,$racine);
 		
 	}
         
