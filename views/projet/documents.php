@@ -69,7 +69,9 @@
 	</div> 
     <form method="post" action="<?php echo site_url('projet/action/')?>"> <!-- Ajout -->
     <input type="hidden" name="idprojet" id="idprojet" value="<?php echo $idprojet; ?>" /> <!-- Ajout -->
-    <input type="hidden" name="idrep_courant" id="idrep_courant" value="<?php echo $idrep; ?>" /> <!-- Ajout -->
+    <input type="hidden" name="idrep_courant" value="<?php echo $idrep; ?>" /> <!-- Ajout -->
+    <input type="hidden" name="repertoires[]" value="0" />
+    <input type="hidden" name="docs[]" value="0" />
     
     <?php
         echo '<div class="btn-toolbar" style="text-align:left">';
@@ -92,20 +94,22 @@
       else {
         echo '<ul class="docliste docs">';
         echo '<li class="entete">Nom du document<div class="meta"><span data-meta="proprietaire">Proprietaire</span><br/><span data-meta="date-maj">Date de mise à jour</span> <span data-meta="date-creation" style="padding-left:30px;"> Date de création </span> </div></li>';
-
+        
+            
         // On liste les dossiers
         foreach($repertoires as $rep) {
-            
+
             echo '<li class="repertoire">'; 
-            echo '<input type="checkbox" name="repertoires" value="'.$rep->idprojet.'" />'; // Ajout 
+            echo '<input type="checkbox" name="repertoires[]" value="'.$rep->idrepertoire.'" />'; // Ajout 
             echo '<a  class="replink" href="'.site_url("projet/documents/".$rep->idprojet."/".$rep->idrepertoire).'">'.$rep->nom.'</a>';
             echo '</li>'; //<br />
-            
-           
-        }
+         }
+         
+        
 
         // Si le dossier a des documents
         if(!empty($documents)) {
+          echo '<input type="hidden" name="doc_present" value="oui"/>';  
           foreach($documents as $doc){
             if(!empty($doc->droits->lecture) && $doc->droits->lecture == true){
               /*if ($doc->idrepertoire == '0')
@@ -115,7 +119,7 @@
                 $chemin= site_url("document/telecharger/".$doc->iddocument);
 
               echo '<li class="'.$doc->type->type.'"><a class="downlink" target="_blank" href="'.$chemin.'"><img src="'.site_url("img/download.png").'" width="16" height="16" /></a>';
-              echo '<input type="checkbox" name="documents" value="'.$doc->iddocument.'"/>';  // Ajout
+              echo '<input type="checkbox" name="docs[]" value="'.$doc->iddocument.'"/>';  // Ajout
               if($membres[$doc->idutilisateur] != null){
                 $user = $membres[$doc->idutilisateur]->nom;
               }else $user = "ERREUR SUPPRIMER FICHIER ET RE-UPLOADER";
@@ -123,6 +127,7 @@
             }
           }
         }
+        else {echo '<input type="hidden" name="doc_present" value="non"/>';};
 
         echo '</ul>';
 
@@ -130,7 +135,7 @@
     ?>
     </br>
     <button type="submit" name="ordre" value="telecharger" class="btn" id="telecharger"/>Telecharger</button> <!-- Ajout -->
-    <button type="submit" name="ordre" class="btn" />Supprimer</button> <!-- Ajout -->
+    <button type="submit" name="ordre" value="supprimer" class="btn" />Supprimer</button> <!-- Ajout -->
     </form>
     <div class="clearfix"></div>
     <?php if(!empty($droits->upload)): ?>

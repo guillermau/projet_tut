@@ -113,7 +113,23 @@ class Repertoire_model extends CI_Model {
 
 	// Retourne le chemin virtuel du repertoire par rapport a la racine // Guillaume
 	/*public function chemin_virt_rep($idrep,$idracine) {
-		Peut etre innutile de develloper cette fonction
+            $this->load->model("projet_model");
+            
+            $data = array();  
+            if ($idrep == null){
+                $data = 'test';
+                return $data;
+            }
+            else{
+                $idpere = $this->pere_repertoire($idprojet, $idrep);
+                $data[$this->nom_repertoire($idrep)]=$this->chemin_clic_rep($idprojet, $idrep);
+                while($idpere != null){
+                    $data[$this->nom_repertoire($idpere)]=$this->chemin_clic_rep($idprojet, $idpere);
+                    $idpere = $this->pere_repertoire($idprojet, $idpere);
+                }
+                $data[$this->projet_model->recuperer_projet($idprojet)->nom]= $this->chemin_clic_rep($idprojet,null);
+                return array_reverse($data);
+            }
 	}*/
 
 
@@ -134,32 +150,28 @@ class Repertoire_model extends CI_Model {
     public function telecharger_rep ($idrep,$idracine) { //
             $this->load->model("document_model");
 
+            if(!is_null($idrep) && $idrep != 0){
+            
             // Controle si presence de documents
-            $data = $this->db->select("iddococument")
-                    ->from($this->documents)
-                    ->where("idrepertoire", $idrep)
-                    ->get()
-                    ->row();
-           
-           
-            foreach ( $data as $iddoc) // Oui, ajout au zip
-            {
-                    $this->document_model->telecharger_zip ($iddoc,$idracine);
+            $query = $this->db->query('SELECT iddocument FROM '.$this->documents.' WHERE idrepertoire = '.$idrep);
+            
+            if ($query->num_rows() > 0){
+                foreach ( $query->result_array() as $row) // Oui, ajout au zip
+                {
+                    $this->document_model->telecharger_zip ($row['iddocument'],$idracine);
+                }
             }
 
-            $data = $this->db->select("idrepertoire")
-                    ->from($this->repertoires)
-                    ->where("pere", $idrep)
-                    ->get()
-                    ->row();
-
-            foreach ( $data as $idrepertoire) // Oui, ajout au zip
-            {
-                    $this->telecharger_zip($idrepertoire,$idracine);
+            $query = $this->db->query('SELECT idrepertoire FROM '.$this->repertoires.' WHERE pere = '.$idrep);
+            
+            if ($query->num_rows() > 0){
+                foreach ( $query->result_array() as $row) // Oui, ajout au zip
+                {
+                        $this->telecharger_rep($row['idrepertoire'],$idracine);
+                }
             }
-
             //Fin
-
+            }
     }
 
 	// Créer répertoire

@@ -399,44 +399,45 @@ class Document_model extends CI_Model {
 	public function telecharger_zip ($iddoc,$idracine){
 	$this->load->helper('download');
 	$this->load->library('zip');
+        $this->load->model('repertoire_model');
 	
-	
+	if(!is_null($iddoc) && $iddoc != 0){
 	$document = $this->db->select('*')
 						->from($this->table)
 						->where('iddocument',$iddoc)
 						->get()
 						->row();
 	
+        // Creation du chemin sur le serveur
 	if ($document->idrepertoire == '0')
 	{ $chemin = site_url("uploads/projets/".$document->idprojet."/".$document->chemin_fichier);}
 	else 
 	{ $chemin = site_url("uploads/projets/".$document->idprojet."/".$document->idrepertoire."/".$document->chemin_fichier);}
 	
-	$chemin_concret = $document->chemin_fichier;
-	$idrep = $document->idrepertoire;
+        // Creation du chemin theorique
+	$chemin_concret = $document->nom_original;
+	$idrep = $document->idrepertoire; // Repertoire d'herbgement
+          
 	
-	if($document->idrepertoire != $idracine){
-	
-		do
-		{
-		$repertoire = $this->db->select("*")
-							->from("repertoires")
-							->where("idprojet", $document->idprojet)
-							->where("idrepertoire", $idrep)
-							->get()
-							->row();
-		$chemin_concret = $repertoire->nom."/".$chemin_concret;
-		$idrep = $repertoire->pere;
-		}
-		while ( !is_null($idrep) && $idrep == $idracine);
-	}
+        if ($idrep != 0 && $idrep != $idracine){
+            // Si je ne suis pas dans le meme repertoire que la racine
+            
+                while ($idrep != $idracine)
+                {
+                    $chemin_concret = $this->repertoire_model->infos_repertoire($idrep)->nom."/".$chemin_concret;  
+                    $idrep = $this->repertoire_model->infos_repertoire($idrep)->pere;
+                }
+            
+        }	
+	else
+        {}
 	
 	$data = file_get_contents($chemin); // Read the file's contents
-	//$name = $repertoire->nom."/".$document->chemin_fichier;
+	
 	
 	//Avec la fonction zip
 	$this->zip->add_data($chemin_concret, $data);
-	
+        }
 	
 	
 	}

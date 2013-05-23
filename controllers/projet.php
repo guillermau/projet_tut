@@ -524,48 +524,66 @@ class Projet extends CI_Controller {
 	public function action() {
 		$this->load->model("repertoire_model");
 		$this->load->model("document_model");
+                $this->load->model("projet_model");
 		
 		//$repData = $this->repertoire_model->infos_repertoire($racine); // On recupere les donnees de la racine
-		
+		$documents = array();
+                $repertoires = array();
 		$ordre = $this->input->post("ordre", TRUE); // On recupere l'ordre
-		$racine = $this->input->post("idrep_courant", TRUE);
-		$idprojet = $this->input->post("idprojet", TRUE);
-                $repertoires = $this->input->post("repertoires", TRUE);;
-                $documents = $this->input->post("$documents", TRUE);;
+		$racine = $_POST['idrep_courant'];
+		$idprojet = $_POST['idprojet'];
+                $documents = $_POST['docs']; //utiliser methode de merge
+                $repertoires = $_POST['repertoires'];
+                
+                
 		
+                
 		//On recupere les donnes du post
 		//On cherche a identifier les checkbox valid�
 		
 		// On fait le tri entre repertoire et document
 		
 		
-		if ( $ordre == "Telecharger") // On telecharge
+		if ( $_POST['ordre'] == "telecharger") // On telecharge
 		{
                     // telecharger_zip ($iddoc,$idracine) pour les documents
+                   
                     foreach ($documents as $iddoc)
                     {
                         $this->document_model->telecharger_zip($iddoc,$racine);
                     }
+                    
+                       
+                    
                     // telecharger_rep ($idrep,$idracine) pour les repertoires
                     foreach ($repertoires as $idrep)
                     {
-                        $this->repertoire_model->telecharger_rep ($idrep,$idracine);
+                        $this->repertoire_model->telecharger_rep($idrep,$racine);
                     }
-                    $this->zip->download('download.zip');
-                    $this->session->set_flashdata('succes', 'Document telecharger');
+                        
+                    
+                    if ($racine == null)
+                    {$nom = $this->projet_model->recuperer_projet($idprojet)->nom;}
+                    else
+                    {$nom = $this->repertoire_model->infos_repertoire($racine)->nom;}
+                    
+                    $this->zip->download($nom.'.zip');
+                    $this->session->set_flashdata('succes', 'Document telecharger'.$racine);
+                    
 		}
 		else //Ici on supprime
 		{
-                    foreach ($documents as $iddoc)
+                    /*foreach ($documents as $iddoc)
                     {
                         $this->document_model->supprimer($iddoc);
-                    }
+                    }*/
                     foreach ($repertoires as $idrep)
                     {
                         //$this->repertoire_model->supprimer_rep ($idrep);
                     }
                     
-                }
+                } 
+                
 		$this->actualisation($idprojet,$racine);
 		
 	}

@@ -361,7 +361,7 @@ public function telecharger_zip($iddoc){
 
 	if($droits->ecriture || $doc->idutilisateur == $this->donnees->idutilisateur) {
 		
-		$this->document_model->telecharger_zip ($iddoc,$doc->idrepertoire); // temporaire
+		$this->document_model->telecharger_zip ($iddoc,0); // temporaire
 
 		$this->zip->download('download.zip');
 		$this->session->set_flashdata('succes', 'Document telecharger');
