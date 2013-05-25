@@ -40,110 +40,110 @@ class Repertoire_model extends CI_Model {
     
     
     // Retourner id du pere
-	public function pere_repertoire($idproj, $idrep) {
-		$data = $this->db->select("*")
-						 ->from("repertoires")
-						 ->where("idprojet", $idproj)
-						 ->where("idrepertoire", $idrep)
-						 ->get()
-						 ->row();
-                return $data->pere;
-                
+    public function pere_repertoire($idproj, $idrep) {
+            $data = $this->db->select("*")
+                                             ->from("repertoires")
+                                             ->where("idprojet", $idproj)
+                                             ->where("idrepertoire", $idrep)
+                                             ->get()
+                                             ->row();
+            return $data->pere;
+
+    }
+
+
+    //Liste les parents d'un repertoire
+    public function arborescence($idprojet,$idrep){
+       $this->load->model("projet_model");
+
+        $data = array();  
+        if ($idrep == null){
+            $data[$this->projet_model->recuperer_projet($idprojet)->nom]= $this->chemin_clic_rep($idprojet,null);
+            return $data;
         }
-    
-        
-        //Liste les parents d'un repertoire
-        public function arborescence($idprojet,$idrep){
-           $this->load->model("projet_model");
-            
-            $data = array();  
-            if ($idrep == null){
-                $data[$this->projet_model->recuperer_projet($idprojet)->nom]= $this->chemin_clic_rep($idprojet,null);
-                return $data;
+        else{
+            $idpere = $this->pere_repertoire($idprojet, $idrep);
+            $data[$this->nom_repertoire($idrep)]=$this->chemin_clic_rep($idprojet, $idrep);
+            while($idpere != null){
+                $data[$this->nom_repertoire($idpere)]=$this->chemin_clic_rep($idprojet, $idpere);
+                $idpere = $this->pere_repertoire($idprojet, $idpere);
             }
-            else{
-                $idpere = $this->pere_repertoire($idprojet, $idrep);
-                $data[$this->nom_repertoire($idrep)]=$this->chemin_clic_rep($idprojet, $idrep);
-                while($idpere != null){
-                    $data[$this->nom_repertoire($idpere)]=$this->chemin_clic_rep($idprojet, $idpere);
-                    $idpere = $this->pere_repertoire($idprojet, $idpere);
-                }
-                $data[$this->projet_model->recuperer_projet($idprojet)->nom]= $this->chemin_clic_rep($idprojet,null);
-                return array_reverse($data);
-            }
-              
-              
+            $data[$this->projet_model->recuperer_projet($idprojet)->nom]= $this->chemin_clic_rep($idprojet,null);
+            return array_reverse($data);
         }
+
+
+    }
          
 
-	// Liste de tous les répertoires d'un projet
-	public function lister_repertoires_projet($idproj) {
-		return $this->db->select("*")
-						->from("repertoires")
-						->where("idprojet", $idproj)
-						->order_by("pere")
-						->get()
-						->result();
-	}
+    // Liste de tous les répertoires d'un projet
+    public function lister_repertoires_projet($idproj) {
+            return $this->db->select("*")
+                                            ->from("repertoires")
+                                            ->where("idprojet", $idproj)
+                                            ->order_by("pere")
+                                            ->get()
+                                            ->result();
+    }
 
 
-	// Lister repertoire en fonction du pere
-	public function lister_repertoires($idproj, $idpere) {
-		return $this->db->select("*")
-						->from("repertoires")
-						->where("idprojet", $idproj)
-						->where("pere", $idpere)
-						->get()
-						->result();
-	}
+    // Lister repertoire en fonction du pere
+    public function lister_repertoires($idproj, $idpere) {
+            return $this->db->select("*")
+                                            ->from("repertoires")
+                                            ->where("idprojet", $idproj)
+                                            ->where("pere", $idpere)
+                                            ->get()
+                                            ->result();
+    }
 
 
-	// Retourne le chemin physique du repertoire // Guillaume
-	public function chemin_phys_rep($idrep) {
-		$data = $this->db->select("*")
-    					->from($this->repertoires)
-    					->where("idrepertoire", $idrep)
-    					->get()
-    					->row();
+    // Retourne le chemin physique du repertoire // Guillaume
+    public function chemin_phys_rep($idrep) {
+            $data = $this->db->select("*")
+                                    ->from($this->repertoires)
+                                    ->where("idrepertoire", $idrep)
+                                    ->get()
+                                    ->row();
 
-		$chemin = site_url("uploads/projets/".$data->idprojet."/".$data->idrepertoire);
+            $chemin = site_url("uploads/projets/".$data->idprojet."/".$data->idrepertoire);
 
-		return $chemin;
-	}
+            return $chemin;
+    }
 
-	// Retourne le chemin virtuel du repertoire par rapport a la racine // Guillaume
-	/*public function chemin_virt_rep($idrep,$idracine) {
-            $this->load->model("projet_model");
-            
-            $data = array();  
-            if ($idrep == null){
-                $data = 'test';
-                return $data;
+    // Retourne le chemin virtuel du repertoire par rapport a la racine // Guillaume
+    /*public function chemin_virt_rep($idrep,$idracine) {
+        $this->load->model("projet_model");
+
+        $data = array();  
+        if ($idrep == null){
+            $data = 'test';
+            return $data;
+        }
+        else{
+            $idpere = $this->pere_repertoire($idprojet, $idrep);
+            $data[$this->nom_repertoire($idrep)]=$this->chemin_clic_rep($idprojet, $idrep);
+            while($idpere != null){
+                $data[$this->nom_repertoire($idpere)]=$this->chemin_clic_rep($idprojet, $idpere);
+                $idpere = $this->pere_repertoire($idprojet, $idpere);
             }
-            else{
-                $idpere = $this->pere_repertoire($idprojet, $idrep);
-                $data[$this->nom_repertoire($idrep)]=$this->chemin_clic_rep($idprojet, $idrep);
-                while($idpere != null){
-                    $data[$this->nom_repertoire($idpere)]=$this->chemin_clic_rep($idprojet, $idpere);
-                    $idpere = $this->pere_repertoire($idprojet, $idpere);
-                }
-                $data[$this->projet_model->recuperer_projet($idprojet)->nom]= $this->chemin_clic_rep($idprojet,null);
-                return array_reverse($data);
-            }
-	}*/
+            $data[$this->projet_model->recuperer_projet($idprojet)->nom]= $this->chemin_clic_rep($idprojet,null);
+            return array_reverse($data);
+        }
+    }*/
 
 
-	// Retourne l'adresse de l'application du repertoire // Guillaume
-	public function chemin_clic_rep($idprojet,$idrep) {
-            
-            $chemin = "projet/documents/".$idprojet;
-	    if($idrep==null)
-                    return $chemin;
-            else{
-                $chemin = $chemin."/".$idrep;
+    // Retourne l'adresse de l'application du repertoire // Guillaume
+    public function chemin_clic_rep($idprojet,$idrep) {
+
+        $chemin = "projet/documents/".$idprojet;
+        if($idrep==null)
                 return $chemin;
-            }	
-	}
+        else{
+            $chemin = $chemin."/".$idrep;
+            return $chemin;
+        }	
+    }
 
     // Telecharger repertoire // Guillaume
     // Possibilite de controle des repertoires
@@ -245,30 +245,30 @@ class Repertoire_model extends CI_Model {
     // Telecharger repertoire // Guillaume
     // Possibilite de controle des repertoires
     public function vider_rep ($idrep) { //
-            $this->load->model("document_model");
+        $this->load->model("document_model");
 
-            if(!is_null($idrep) && $idrep != 0){
-            
-            // Controle si presence de documents
-            $query = $this->db->query('SELECT iddocument FROM '.$this->documents.' WHERE idrepertoire = '.$idrep);
-            
-            if ($query->num_rows() > 0){
-                foreach ( $query->result_array() as $row) // Oui, ajout au zip
-                {
-                    $this->document_model->supprimer_document($row['iddocument']);
-                }
-            }
+        if(!is_null($idrep) && $idrep != 0){
 
-            $query = $this->db->query('SELECT idrepertoire FROM '.$this->repertoires.' WHERE pere = '.$idrep);
-            
-            if ($query->num_rows() > 0){
-                foreach ( $query->result_array() as $row) // Oui, ajout au zip
-                {
-                        $this->vider_rep($row['idrepertoire']);
-                }
+        // Controle si presence de documents
+        $query = $this->db->query('SELECT iddocument FROM '.$this->documents.' WHERE idrepertoire = '.$idrep);
+
+        if ($query->num_rows() > 0){
+            foreach ( $query->result_array() as $row) // Oui, ajout au zip
+            {
+                $this->document_model->supprimer_document($row['iddocument']);
             }
-            //Fin
+        }
+
+        $query = $this->db->query('SELECT idrepertoire FROM '.$this->repertoires.' WHERE pere = '.$idrep);
+
+        if ($query->num_rows() > 0){
+            foreach ( $query->result_array() as $row) // Oui, ajout au zip
+            {
+                    $this->vider_rep($row['idrepertoire']);
             }
+        }
+        $this->supprimer_repertoire($idrep);
+        }
     }
         
 }        

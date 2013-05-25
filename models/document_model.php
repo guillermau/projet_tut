@@ -334,7 +334,9 @@ class Document_model extends CI_Model {
 	// supprimer document // modifier (Guillaume)
 	public function supprimer_document($iddoc) {
 		$this->load->model('tag_model');
-		$this->tag_model->supprimer_tags_document($iddoc);
+                
+		if(!is_null($iddoc) && $iddoc != 0){
+                $this->tag_model->supprimer_tags_document($iddoc);
 	 	
 		$document = $this->db->select('*')
 						->from($this->table)
@@ -355,6 +357,7 @@ class Document_model extends CI_Model {
 		
 		$this->upload_model->supprimer_fichier($chemin);
 		return $chemin;
+                }
 	}
 	
 	// déplacer document

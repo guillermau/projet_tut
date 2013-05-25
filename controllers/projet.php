@@ -582,13 +582,14 @@ class Projet extends CI_Controller {
                     {
                         $this->repertoire_model->vider_rep($idrep);
                     }
+                    
                     $this->session->set_flashdata('succes', 'Document supprimer');
                   
                 
                     
                 } 
-                $this->session->set_flashdata('succes', 'Document telecharger'.$racine);
-		//$this->actualisation($idprojet,$racine);
+                
+		$this->actualisation($idprojet,$racine);
 		
 	}
         
