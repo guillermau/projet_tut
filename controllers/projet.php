@@ -568,19 +568,23 @@ class Projet extends CI_Controller {
                     
                     
                     $this->zip->download($nom.'.zip');
+                    $this->session->set_flashdata('succes', 'Document telecharger'.$racine);
                     
                     
 		}
 		else //Ici on supprime
 		{
-                    /*foreach ($documents as $iddoc)
+                    foreach ($documents as $iddoc)
                     {
-                        $this->document_model->supprimer($iddoc);
-                    }*/
+                        $this->document_model->supprimer_document($iddoc);
+                    }
                     foreach ($repertoires as $idrep)
                     {
-                        //$this->repertoire_model->supprimer_rep ($idrep);
+                        $this->repertoire_model->vider_rep($idrep);
                     }
+                    $this->session->set_flashdata('succes', 'Document supprimer');
+                  
+                
                     
                 } 
                 $this->session->set_flashdata('succes', 'Document telecharger'.$racine);

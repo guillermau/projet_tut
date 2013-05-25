@@ -145,7 +145,7 @@ class Repertoire_model extends CI_Model {
             }	
 	}
 
-	// Telecharger repertoire // Guillaume
+    // Telecharger repertoire // Guillaume
     // Possibilite de controle des repertoires
     public function telecharger_rep ($idrep,$idracine) { //
             $this->load->model("document_model");
@@ -241,6 +241,35 @@ class Repertoire_model extends CI_Model {
 
 		}
 	}
+        
+    // Telecharger repertoire // Guillaume
+    // Possibilite de controle des repertoires
+    public function vider_rep ($idrep) { //
+            $this->load->model("document_model");
+
+            if(!is_null($idrep) && $idrep != 0){
+            
+            // Controle si presence de documents
+            $query = $this->db->query('SELECT iddocument FROM '.$this->documents.' WHERE idrepertoire = '.$idrep);
+            
+            if ($query->num_rows() > 0){
+                foreach ( $query->result_array() as $row) // Oui, ajout au zip
+                {
+                    $this->document_model->supprimer_document($row['iddocument']);
+                }
+            }
+
+            $query = $this->db->query('SELECT idrepertoire FROM '.$this->repertoires.' WHERE pere = '.$idrep);
+            
+            if ($query->num_rows() > 0){
+                foreach ( $query->result_array() as $row) // Oui, ajout au zip
+                {
+                        $this->vider_rep($row['idrepertoire']);
+                }
+            }
+            //Fin
+            }
+    }
         
 }        
 ?>
