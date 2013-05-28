@@ -155,22 +155,35 @@ class Repertoire_model extends CI_Model {
             // Controle si presence de documents
             $query = $this->db->query('SELECT iddocument FROM '.$this->documents.' WHERE idrepertoire = '.$idrep);
             
-            if ($query->num_rows() > 0){
+            $nb_docs = $query->num_rows() ;
+            $pres_docs = false;
+            
+            if ($nb_docs > 0){
                 foreach ( $query->result_array() as $row) // Oui, ajout au zip
                 {
                     $this->document_model->telecharger_zip ($row['iddocument'],$idracine);
                 }
+                $pres_docs = true;
             }
 
             $query = $this->db->query('SELECT idrepertoire FROM '.$this->repertoires.' WHERE pere = '.$idrep);
             
-            if ($query->num_rows() > 0){
+            
+            $nb_rep = $query->num_rows();
+            
+            if ( $nb_rep > 0){
                 foreach ( $query->result_array() as $row) // Oui, ajout au zip
                 {
-                        $this->telecharger_rep($row['idrepertoire'],$idracine);
+                    $var = $this->telecharger_rep($row['idrepertoire'],$idracine);
+                    if ($var) $pres_docs = true;
                 }
             }
-            //Fin
+            
+            if($pres_docs)
+                return true;
+            }
+            else {
+                return false;
             }
     }
 

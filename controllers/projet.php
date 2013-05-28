@@ -546,19 +546,24 @@ class Projet extends CI_Controller {
 		
 		if ( $ordre == "telecharger") // On telecharge
 		{
+                    // On regarde s'il y a des documents a telecharger
+                    $pres_doc = false;
+
                     // On telecharge les documents                
                     if($documents){
                         foreach ($documents as $iddoc)
                         {
                             $this->document_model->telecharger_zip($iddoc,$racine_projet);
-                        }                  
+                        }
+                        $pres_doc = true;
                     } 
                     
                     // On telecharge les repertoires
                     if($repertoires){
                         foreach ($repertoires as $idrep)
                         {
-                            $this->repertoire_model->telecharger_rep($idrep,$racine_projet);
+                           $var = $this->repertoire_model->telecharger_rep($idrep,$racine_projet);
+                           if ($var) $pres_doc = true;
                         }                        
                     }
                     
@@ -569,8 +574,7 @@ class Projet extends CI_Controller {
                         else
                         {$nom = $this->repertoire_model->infos_repertoire($racine_projet)->nom;}
 
-
-                        $this->zip->download($nom.'.zip');
+                        if($pres_doc)  $this->zip->download($nom.'.zip');
                         $this->session->set_flashdata('succes', 'Document telecharger'.$racine);
                     }
                     else 
