@@ -527,13 +527,13 @@ class Projet extends CI_Controller {
                 $this->load->model("projet_model");
 		
 		//$repData = $this->repertoire_model->infos_repertoire($racine); // On recupere les donnees de la racine
-		$documents = array();
-                $repertoires = array();
-		$this->input->post('ordre'); // On recupere l'ordre
+		//$documents = array();
+                //$repertoires = array();
+		$ordre = $this->input->post('ordre'); // On recupere l'ordre
 		$racine_projet = $this->input->post('idrep_courant');
 		$this->input->post('idprojet');
-                $docs_pres = $documents = $this->input->post('docs'); //utiliser methode de merge
-                $reps_pres =$repertoires = $this->input->post('repertoires');
+                $documents = $this->input->post('docs'); //utiliser methode de merge
+                $repertoires = $this->input->post('repertoires');
                 
                 
 		
@@ -547,18 +547,18 @@ class Projet extends CI_Controller {
 		if ( $ordre == "telecharger") // On telecharge
 		{
                     // On telecharge les documents                
-                    if($docs_pres){
+                    if($documents){
                         foreach ($documents as $iddoc)
                         {
-                            $this->document_model->telecharger_zip($iddoc,$idrep_courant);
+                            $this->document_model->telecharger_zip($iddoc,$racine_projet);
                         }                  
                     } 
                     
                     // On telecharge les repertoires
-                    if($reps_pres){
+                    if($repertoires){
                         foreach ($repertoires as $idrep)
                         {
-                            $this->repertoire_model->telecharger_rep($idrep,$idrep_courant);
+                            $this->repertoire_model->telecharger_rep($idrep,$racine_projet);
                         }                        
                     }
                         
@@ -566,7 +566,7 @@ class Projet extends CI_Controller {
                     if (!$racine_projet)
                     {$nom = $this->projet_model->recuperer_projet($idprojet)->nom;}
                     else
-                    {$nom = $this->repertoire_model->infos_repertoire($idrep_courant)->nom;}
+                    {$nom = $this->repertoire_model->infos_repertoire($racine_projet)->nom;}
                     
                     
                     $this->zip->download($nom.'.zip');
