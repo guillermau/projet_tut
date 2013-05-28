@@ -531,7 +531,7 @@ class Projet extends CI_Controller {
                 //$repertoires = array();
 		$ordre = $this->input->post('ordre'); // On recupere l'ordre
 		$racine_projet = $this->input->post('idrep_courant');
-		$this->input->post('idprojet');
+		$idprojet = $this->input->post('idprojet');
                 $documents = $this->input->post('docs'); //utiliser methode de merge
                 $repertoires = $this->input->post('repertoires');
                 
@@ -561,33 +561,45 @@ class Projet extends CI_Controller {
                             $this->repertoire_model->telecharger_rep($idrep,$racine_projet);
                         }                        
                     }
-                        
-                    // On donne le nom du fichier zip
-                    if (!$racine_projet)
-                    {$nom = $this->projet_model->recuperer_projet($idprojet)->nom;}
-                    else
-                    {$nom = $this->repertoire_model->infos_repertoire($racine_projet)->nom;}
                     
-                    
-                    $this->zip->download($nom.'.zip');
-                    $this->session->set_flashdata('succes', 'Document telecharger'.$racine);
-                    
-                    
+                    if($repertoires || $documents) {
+                        // On donne le nom du fichier zip
+                        if (!$racine_projet)
+                        {$nom = $this->projet_model->recuperer_projet($idprojet)->nom;}
+                        else
+                        {$nom = $this->repertoire_model->infos_repertoire($racine_projet)->nom;}
+
+
+                        $this->zip->download($nom.'.zip');
+                        $this->session->set_flashdata('succes', 'Document telecharger'.$racine);
+                    }
+                    else 
+                    {    
+                        $this->session->set_flashdata('succes', 'Aucun document selectionner');                       
+                    }
 		}
 		else //Ici on supprime
 		{
-                    foreach ($documents as $iddoc)
-                    {
-                        $this->document_model->supprimer_document($iddoc);
-                    }
-                    foreach ($repertoires as $idrep)
-                    {
-                        $this->repertoire_model->vider_rep($idrep);
+                    if($documents){
+                        foreach ($documents as $iddoc)
+                        {
+                            $this->document_model->supprimer_document($iddoc);
+                        }
                     }
                     
-                    $this->session->set_flashdata('succes', 'Document supprimer');
-                  
-                
+                    if($repertoires){
+                        foreach ($repertoires as $idrep)
+                        {
+                            $this->repertoire_model->vider_rep($idrep);
+                        }                    
+                    }
+                    
+                    if($repertoires || $documents) {
+                        $this->session->set_flashdata('succes', 'Document supprimer');
+                    }
+                    else {
+                        $this->session->set_flashdata('succes', 'Aucun document selectionner');
+                    }
                     
                 } 
                 
