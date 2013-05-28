@@ -70,8 +70,6 @@
     <form method="post" action="<?php echo site_url('projet/action/')?>"> <!-- Ajout -->
     <input type="hidden" name="idprojet" id="idprojet" value="<?php echo $idprojet; ?>" /> <!-- Ajout -->
     <input type="hidden" name="idrep_courant" value="<?php echo $idrep; ?>" /> <!-- Ajout -->
-    <input type="hidden" name="repertoires[]" value="0" />
-    <input type="hidden" name="docs[]" value="0" />
     
     <?php
         echo '<div class="btn-toolbar" style="text-align:left">';

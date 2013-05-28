@@ -529,11 +529,11 @@ class Projet extends CI_Controller {
 		//$repData = $this->repertoire_model->infos_repertoire($racine); // On recupere les donnees de la racine
 		$documents = array();
                 $repertoires = array();
-		$ordre = $this->input->post("ordre", TRUE); // On recupere l'ordre
-		$racine = $_POST['idrep_courant'];
-		$idprojet = $_POST['idprojet'];
-                $documents = $_POST['docs']; //utiliser methode de merge
-                $repertoires = $_POST['repertoires'];
+		$this->input->post('ordre'); // On recupere l'ordre
+		$racine_projet = $this->input->post('idrep_courant');
+		$this->input->post('idprojet');
+                $docs_pres = $documents = $this->input->post('docs'); //utiliser methode de merge
+                $reps_pres =$repertoires = $this->input->post('repertoires');
                 
                 
 		
@@ -544,27 +544,29 @@ class Projet extends CI_Controller {
 		// On fait le tri entre repertoire et document
 		
 		
-		if ( $_POST['ordre'] == "telecharger") // On telecharge
+		if ( $ordre == "telecharger") // On telecharge
 		{
                     // On telecharge les documents                
-                    foreach ($documents as $iddoc)
-                    {
-                        $this->document_model->telecharger_zip($iddoc,$racine);
-                    }
-                    
-                       
+                    if($docs_pres){
+                        foreach ($documents as $iddoc)
+                        {
+                            $this->document_model->telecharger_zip($iddoc,$idrep_courant);
+                        }                  
+                    } 
                     
                     // On telecharge les repertoires
-                    foreach ($repertoires as $idrep)
-                    {
-                        $this->repertoire_model->telecharger_rep($idrep,$racine);
+                    if($reps_pres){
+                        foreach ($repertoires as $idrep)
+                        {
+                            $this->repertoire_model->telecharger_rep($idrep,$idrep_courant);
+                        }                        
                     }
                         
                     // On donne le nom du fichier zip
-                    if ($racine == null)
+                    if (!$racine_projet)
                     {$nom = $this->projet_model->recuperer_projet($idprojet)->nom;}
                     else
-                    {$nom = $this->repertoire_model->infos_repertoire($racine)->nom;}
+                    {$nom = $this->repertoire_model->infos_repertoire($idrep_courant)->nom;}
                     
                     
                     $this->zip->download($nom.'.zip');
