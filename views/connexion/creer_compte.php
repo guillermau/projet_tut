@@ -21,6 +21,9 @@
 
         <label for="adresse">Adresse</label>
         <input type="text" name="adresse" id="adresse" value="<?php echo set_value('adresse'); ?>" />
+        
+        <label for="adresse">Justification de l'inscription</label>
+        <textarea name="justification" id="justification" rows="5" cols="20"></textarea>
         <br/>
         <input type="submit" class="btn" value="Envoyer" style="margin-top:20px;" />
       </form>

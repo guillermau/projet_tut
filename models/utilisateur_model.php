@@ -38,8 +38,19 @@ class Utilisateur_model extends CI_Model {
 		$this->db->insert($this->table, $data);
 		return $this->db->insert_id();
 	}
+        
+        //Ajoute la justification d'inscription
+	public function justifier_inscription($id,$justification){
+                $data = array(  'id' => $id,
+                                'justification' => $justification);
+                
+                $this->db->insert('justification', $data);
+                return $this->db->insert_id();
+        }
+        
+        
 
-	// Récupérer un utilisateur en connaissant son identifiant
+        // Récupérer un utilisateur en connaissant son identifiant
 	public function recuperer_utilisateur($id) {
 		return $this->db->select('*')
 						->from($this->table)
@@ -56,7 +67,14 @@ class Utilisateur_model extends CI_Model {
 						->get()
 						->row();
 	}
-
+        
+        public function recuperer_justification_utilisateur(){
+            return $this->db->select('*')
+                            ->from('justification')
+                            ->get()
+                            ->result();
+        }
+        
 	// Récupérer tous les utilisateurs
 	public function recuperer_liste_utilisateurs($statut = false) {
 		if($statut == false || $statut == 'actif') {

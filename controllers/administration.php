@@ -23,6 +23,7 @@ class Administration extends CI_Controller {
 		$this->load->model("utilisateur_model");
 
 		// On liste les utilisateur en attente
+ //  TEST JUSTIFICATION                $data["justification"]= $this->utilisateur_model->recuperer_justification_utilisateur();
 		$data["utilisateurs"] = $this->utilisateur_model->recuperer_liste_utilisateurs("bloque");
 		$data["nbattente"]    = count($data["utilisateurs"]);
 		$data["t_sub"]        = "admin";
@@ -30,12 +31,12 @@ class Administration extends CI_Controller {
 	}
 	
 	/////////////////////////////////////////
-	// Système de gestion des inscriptions //
+	// Systï¿½me de gestion des inscriptions //
 	/////////////////////////////////////////
 
 	// Accepter membre
 	public function accepter_membre($idutilisateur) {
-		// Vérification id fournis
+		// Vï¿½rification id fournis
 		if(is_null($idutilisateur)) {
 			echo 'fail';
 			return false;
@@ -44,7 +45,7 @@ class Administration extends CI_Controller {
 		// Chargement model
 		$this->load->model("utilisateur_model");
 
-		// Vérification utilisateur en attente
+		// Vï¿½rification utilisateur en attente
 		$utilisateur = $this->utilisateur_model->recuperer_utilisateur($idutilisateur);
 
 		// Si oui, on l'accepte en temps que membre
@@ -64,14 +65,14 @@ class Administration extends CI_Controller {
 
 		// Si non, on retourne un fail
 		else {
-			echo 'L\'utilisateur n\'est pas bloqué!';
+			echo 'L\'utilisateur n\'est pas bloquï¿½!';
 			return false;
 		}
 	}
 
-	// Accepter invité
+	// Accepter invitï¿½
 	public function accepter_invite($idutilisateur) {
-		// Vérification id fournis
+		// Vï¿½rification id fournis
 		if(is_null($idutilisateur)) {
 			echo 'fail';
 			return false;
@@ -80,7 +81,7 @@ class Administration extends CI_Controller {
 		// Chargement model
 		$this->load->model("utilisateur_model");
 
-		// Vérification utilisateur en attente
+		// Vï¿½rification utilisateur en attente
 		$utilisateur = $this->utilisateur_model->recuperer_utilisateur($idutilisateur);
 
 		// Si oui, on l'accepte en temps que membre
@@ -100,14 +101,14 @@ class Administration extends CI_Controller {
 
 		// Si non, on retourne un fail
 		else {
-			echo 'L\'utilisateur n\'est pas bloqué!';
+			echo 'L\'utilisateur n\'est pas bloquï¿½!';
 			return false;
 		}
 	}
 
 	// Refuser inscription
 	public function refuser_inscription($idutilisateur) {
-		// Vérification id fournis
+		// Vï¿½rification id fournis
 		if(is_null($idutilisateur)) {
 			echo 'fail';
 			return false;
@@ -116,7 +117,7 @@ class Administration extends CI_Controller {
 		// Chargement model
 		$this->load->model("utilisateur_model");
 
-		// Vérification utilisateur en attente
+		// Vï¿½rification utilisateur en attente
 		$utilisateur = $this->utilisateur_model->recuperer_utilisateur($idutilisateur);
 
 		// Si oui, on l'accepte en temps que membre
@@ -136,7 +137,7 @@ class Administration extends CI_Controller {
 
 		// Si non, on retourne un fail
 		else {
-			echo 'L\'utilisateur n\'est pas bloqué!';
+			echo 'L\'utilisateur n\'est pas bloquï¿½!';
 			return false;
 		}
 	}
@@ -148,7 +149,7 @@ class Administration extends CI_Controller {
 			$this->load->model("utilisateur_model");
 			$data["utilisateur"] = $this->utilisateur_model->recuperer_utilisateur($idutilisateur);
 
-			//vérification du formulaire
+			//vï¿½rification du formulaire
 			$this->load->library('form_validation');
 			
 			$this->form_validation->set_rules('email', 'Email', 'required|max_length[256]|valid_email');				
@@ -157,7 +158,7 @@ class Administration extends CI_Controller {
 			$this->form_validation->set_rules('adresse', 'Adresse', 'required');
 			$this->form_validation->set_rules('statut', 'Statut', 'required');
 
-			//si formulaire envoyé et bon
+			//si formulaire envoyï¿½ et bon
 			if ($this->form_validation->run() == TRUE){	
 				if ($this->input->post("superadmin", TRUE) == "on")
 					$superadmin = true;
@@ -173,25 +174,25 @@ class Administration extends CI_Controller {
 															$this->input->post("prenom",TRUE), $superadmin, $this->input->post("adresse",TRUE),
 															$data["utilisateur"]->image, $this->input->post("statut",TRUE), $invite);
 															
-				//$this->session->set_flashdata("succes","Données modifiées.");
+				//$this->session->set_flashdata("succes","Donnï¿½es modifiï¿½es.");
 				redirect("administration");
-			//si formulaire incomplet ou non envoyé	
+			//si formulaire incomplet ou non envoyï¿½	
 			}else{
 				$this->template->render('administration/modifier_utilisateur',$data);
 			}
 		}
 	}
 	
-	// Envoyer message à tous les membres
+	// Envoyer message ï¿½ tous les membres
 	public function contacter_utilisateurs($destCat = "all", $id = null) {
 	
-		// Récupération des paramètres
+		// Rï¿½cupï¿½ration des paramï¿½tres
 		$objet = $this->input->post('objet');
 		$message = $this->input->post('message');
 		
-		// On vérifie que les paramètres sont fournis
+		// On vï¿½rifie que les paramï¿½tres sont fournis
 		if (empty($destCat) OR empty($objet) OR empty($message)) {
-			echo "Paramètres incomplets";
+			echo "Paramï¿½tres incomplets";
 		}
 	
 		// On continue
@@ -199,7 +200,7 @@ class Administration extends CI_Controller {
 			// Chargement library
 			$this->load->library('email');
 
-			// Chargement données
+			// Chargement donnï¿½es
 			$expediteur = $this->profil_model->recuperer_mes_donnees();
 
 			// Si on veut contacter tout les utilisateurs
