@@ -22,15 +22,19 @@ class Upload_model extends CI_Model{
 	*  
 	*  @param maj TRUE si on veut faire le maj du fichier, FALSE si on ne veut pas (on anexe un chiffre a la fin)
 	*/
-	public function upload($input, $idprojet, $idutilisateur, $idrepertoire,$maj){
+	public function upload($input, $idprojet, $idutilisateur, $idrepertoire,$maj)
+        {
 		$upload_info = array(
 			"succes" => array(),
 			"echec"  => array()
 			);
 		$this->load->library('upload');
- 		if($idrepertoire != 0) {
+ 		if($idrepertoire != 0)
+                {
  			$config['upload_path']   = APPPATH.'../../uploads/projets/'.$idprojet.'/'.$idrepertoire.'/';
- 		} else {
+ 		}
+                else
+                {
  			$config['upload_path']   = APPPATH.'../../uploads/projets/'.$idprojet.'/';
  		}
 
@@ -38,10 +42,13 @@ class Upload_model extends CI_Model{
 		    mkdir($config['upload_path']);
 		}
 		
-		$config['max_size']   = '3000';
-		if($maj) {
+		//$config['max_size']   = '3000'; max size doit être à zero
+		if($maj)
+                {
 			$config['overwrite'] = TRUE;
-		} else {
+		} 
+                else
+                {
 			$config['overwrite'] = FALSE;
 		}
 		 
