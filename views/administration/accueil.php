@@ -18,7 +18,7 @@
 			</tr>
 		<?php 
 			foreach ($utilisateurs as $u) {
-                            foreach($justification as $just){
+                            //foreach($justification as $just){
                                 if($just->id == $u->idutilisateur){
                                 echo "<tr>";
 				echo '<td>'.$u->nom.', '.$u->prenom.'</td>';
@@ -29,7 +29,7 @@
 				echo '<td class="sa-ajouter"><a href="'.site_url('administration/refuser_inscription/'.$u->idutilisateur).'" class="btn btn-danger">Supprimer</a></td>';
 				echo "</tr>";
                                 }
-                            }
+                            //}
 			}
 
 		?>

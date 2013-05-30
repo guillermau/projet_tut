@@ -279,7 +279,8 @@ class Document_model extends CI_Model {
 	
 		$this->db->insert($this->table, $data);
 		$iddoc = $this->db->insert_id();
-		if( ! empty($tag)){
+		if( ! empty($tag))
+                    {
 			$this->load->model('tag_model');
 			$tags = explode ( "," , $tag );
 			foreach ($tags as $t){

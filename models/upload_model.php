@@ -59,10 +59,12 @@ class Upload_model extends CI_Model{
 		$uploaded = $this->upload->up(TRUE);
 		if(! empty($uploaded['success'])) {
 			foreach($uploaded['success'] as $u){
-				if($maj) {
+				if($maj)
+                                {
 					$this->document_model->mise_a_jour($u['file_name'], $idrepertoire, $idprojet);
 
-				} else {
+				} else
+                                {
 					$upload_info["id"] = $this->document_model->creer_document($idprojet, $idutilisateur, $u['client_name'], $u['file_name'], $this->type_model->id_extension($u['file_ext']), "", $idrepertoire, "");
 				}
 				$upload_info["success"][] = $u;
