@@ -23,7 +23,7 @@ class Administration extends CI_Controller {
 		$this->load->model("utilisateur_model");
 
 		// On liste les utilisateur en attente
- //  TEST JUSTIFICATION                $data["justification"]= $this->utilisateur_model->recuperer_justification_utilisateur();
+                $data["justification"]= $this->utilisateur_model->recuperer_justification_utilisateur();
 		$data["utilisateurs"] = $this->utilisateur_model->recuperer_liste_utilisateurs("bloque");
 		$data["nbattente"]    = count($data["utilisateurs"]);
 		$data["t_sub"]        = "admin";

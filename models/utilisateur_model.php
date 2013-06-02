@@ -41,7 +41,7 @@ class Utilisateur_model extends CI_Model {
         
         //Ajoute la justification d'inscription
 	public function justifier_inscription($id,$justification){
-                $data = array(  'id' => $id,
+                $data = array(  'id_user' => $id,
                                 'justification' => $justification);
                 
                 $this->db->insert('justification', $data);
@@ -243,6 +243,9 @@ class Utilisateur_model extends CI_Model {
 
 	// Activer en temps que membre
 	public function activer_membre($idusr) {
+            $this->db->where('id_user', $idusr)
+                         ->delete('justification');
+            
 		$data = array('statut'		=> 'actif',
 					  'invite'		=> 0);
 
@@ -252,6 +255,9 @@ class Utilisateur_model extends CI_Model {
 
 	// Activer en temps que invité
 	public function activer_invite($idusr) {
+            $this->db->where('id_user', $idusr)
+                         ->delete('justification');
+            
 		$data = array('statut'		=> 'actif',
 					  'invite'		=> 1);
 
@@ -261,6 +267,10 @@ class Utilisateur_model extends CI_Model {
 
 	// Refuser inscription
 	public function refuser_inscription($idusr) {
+            //suppression de la justification d'inscription
+                $this->db->where('id_user', $idusr)
+                         ->delete('justification');
+                
 		return $this->db->where('idutilisateur', $idusr)
 				 		->delete($this->table);
 	}

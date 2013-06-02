@@ -199,7 +199,7 @@ Ceci est un mail envoyé automatiquement. Si vous souhaitez contacter les admini
 		$this->form_validation->set_rules('adresse', 'Adresse', 'required');
 		$this->form_validation->set_rules('mdp', 'Nouveau mot de passe', 'required|max_length[256]');
 		$this->form_validation->set_rules('mdpconf', 'Confirmation de mot de passe', 'required|matches[mdp]');
- //  TEST JUSTIFICATION		$this->form_validation->set_rules('justification', 'Justification d\'inscription', 'required|max_length[256]');
+                $this->form_validation->set_rules('justification', 'Justification d\'inscription', 'required|max_length[256]');
                 
 		//si formulaire rempli et bon
 		if ($this->form_validation->run() == TRUE) {
@@ -217,7 +217,7 @@ Ceci est un mail envoyé automatiquement. Si vous souhaitez contacter les admini
 				$this->template->render("connexion/creer_compte",$data);
 			}
 			
- //  TEST JUSTIFICATION          $this->utilisateur_model->justifier_inscription($id, $this->input->post("justification",true));
+                        $this->utilisateur_model->justifier_inscription($id, $this->input->post("justification",true));
                         
                         
 			// Envoi de l'image utilisateur
